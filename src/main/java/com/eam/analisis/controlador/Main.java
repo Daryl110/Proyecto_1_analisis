@@ -25,7 +25,7 @@ public class Main {
         }
         
         long tiempo = System.nanoTime();
-        MetodosOrdenacion.ordenarRapidamente(arreglo);
+        MetodosOrdenacion.ordenarMonticulo(arreglo);
         tiempo = System.nanoTime()-tiempo;
         
         System.out.println("");
