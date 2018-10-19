@@ -34,7 +34,7 @@ public class Cancion implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "ID")
-    @GeneratedValue(generator = "ID", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "ID", strategy = GenerationType.AUTO)
     private BigDecimal id;
     @Basic(optional = false)
     @Column(name = "NOMBRE")
