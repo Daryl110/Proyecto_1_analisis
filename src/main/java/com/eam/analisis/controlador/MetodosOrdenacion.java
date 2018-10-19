@@ -27,34 +27,22 @@ public class MetodosOrdenacion {
     }
     
     public static void ordenarMonticulo(int[] arreglo){
-        int aux;
-        for (int i = arreglo.length-1; i >= 0; i--) {
-            for (int j = 1; j <= i; j++) {
-                aux = arreglo[j];
-                int k = j/2;
-                while (k > 0 && arreglo[k] > aux) {
-                    arreglo[j] = arreglo[k];
-                    j = k;
-                    k /= 2;
-                }
-                arreglo[j] = aux;
-            }
-            aux = arreglo[0];
-            arreglo[0] = arreglo[i];
-            arreglo[i] = aux;
-        }
+        
     }
 
     public static void ordenarShell(int[] arreglo) {
-        int salto = arreglo.length / 2;
-        while (salto > 0) {
-            for (int i = salto; i < arreglo.length; i++) {
-                int j = i - salto;
-                while (j >= 0) {
-                    int k = j + salto;
+        int salto = arreglo.length / 2;//Salto a ralizar para tomar valor a comparar
+        while (salto > 0) {//Mientras el salto sea diferente de 0 se seguira ordenando
+            for (int i = salto; i < arreglo.length; i++) {//Recorrer el arrglo desde la pocision del salto
+                //Hasta la terminacion del arreglo
+                int j = i - salto;//segundo valor i-salto adquiriendo la division del tamaño por 2 e ir restando el valor de i
+                while (j >= 0) {//Mientras el salto no sea 0, esto significa que tomara los valores desde atras a adelante,
+                    //Llegando hasta el valor 0
+                    int k = j + salto;//este valor tomara valores desde 0 hasta el fin del arreglo
                     if (arreglo[j] <= arreglo[k]) {
+                        // si las posiciones son menores o iguales, se rompera el ciclo
                         break;
-                    } else {
+                    } else {//De lo contrario se cambiaran las posiciones
                         int aux = arreglo[j];
                         arreglo[j] = arreglo[k];
                         arreglo[k] = aux;
@@ -62,7 +50,7 @@ public class MetodosOrdenacion {
                     }
                 }
             }
-            salto /= 2;
+            salto /= 2;//Salto tomara la mitad del salto anterior
         }
     }
 
