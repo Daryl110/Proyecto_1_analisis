@@ -107,8 +107,7 @@ public class MetodosOrdenacion {
         while (i <= m) //copia los elementos que quedan de la
         {
             A[k++] = B[i++]; //primera mitad (si los hay)
-    
-    public static void ordenarMonticulo(int[] arreglo){
+        }
         
     }
 
