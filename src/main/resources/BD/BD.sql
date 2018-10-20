@@ -48,13 +48,13 @@ declare
     v_lanzamiento CANCION.FECHA_LANZAMIENTO%TYPE;
 begin
     for i in 1..1000000 loop
-        v_duracion:=DBMS_RANDOM.value(120,800);
-        v_nombre:=DBMS_RANDOM.string('p',20);
+        v_duracion := DBMS_RANDOM.value(120,800);
+        v_nombre := DBMS_RANDOM.string('a',20);
         
             select to_date(
                 TRUNC(
                     DBMS_RANDOM.value(to_char(date '1950-01-01','J'), to_char(date '2019-01-31','J'))
-                    ),'J'
+                ),'J'
             ) into v_lanzamiento from dual;
         insert into CANCION (NOMBRE, DURACION, FECHA_LANZAMIENTO)
         values (v_nombre, v_duracion, v_lanzamiento);

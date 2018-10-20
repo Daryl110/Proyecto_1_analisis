@@ -3,10 +3,6 @@
  */
 package com.eam.analisis.controlador;
 
-import com.eam.analisis.dao.DAO;
-import com.eam.analisis.dao.IDAO;
-import com.eam.analisis.modelo.Cancion;
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
@@ -29,38 +25,39 @@ public class Main {
 
         MetodosOrdenacionCadena n = new MetodosOrdenacionCadena();
 
-        MetodosOrdenacioFecha f = new MetodosOrdenacioFecha();
+        MetodosOrdenacionFecha f = new MetodosOrdenacionFecha();
 
 //        m.mergesort(x, 0, x.length - 1);
-
 //        n.ordenarBurbuja(cadena);
-
 //        for (int i = 0; i < x.length; i++) {
 //            System.out.print(x[i] + " - ");
 //        }
-        System.out.println(" ");
-        for (int i = 0; i < cadena.length; i++) {
-            System.out.print(cadena[i] + " - ");
-        }
-
-        System.out.println(" ");
-
-//        Date now = new Date();
-//        long sixMonthsAgo = (now.getTime() - 15552000000l);
-//        long today = now.getTime();
-
-        f.mergesort(fechas, 0,fechas.length-1);
-        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
-//        for (int i = 0; i < 10; i++) {
-//            long ms = ThreadLocalRandom.current().nextLong(sixMonthsAgo, today);
-//            Date date = new Date(ms);
-//            fechas[i] = date;
+//        System.out.println(" ");
+//        for (int i = 0; i < fechas.length; i++) {
+//            System.out.print(fechas[i] + " - ");
 //        }
+        System.out.println(" ");
 
-//        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
+        Date now = new Date();
+        long sixMonthsAgo = (now.getTime() - 15552000000l);
+        long today = now.getTime();
 
-        for (int i = 0; i < cadena.length; i++) {
-            System.out.print(cadena[i]+" - ");
+        for (int i = 0; i < 10; i++) {
+            long ms = ThreadLocalRandom.current().nextLong(sixMonthsAgo, today);
+            Date date = new Date(ms);
+            fechas[i] = date;
+        }
+        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
+        
+        for (int i = 0; i < fechas.length; i++) {
+            System.out.print(formateador.format(fechas[i]) + " - ");
+        }
+        System.out.println(" ");
+
+        f.ordenarRapido(fechas);
+
+        for (int i = 0; i < fechas.length; i++) {
+            System.out.print(formateador.format(fechas[i]) + " - ");
         }
 
     }
