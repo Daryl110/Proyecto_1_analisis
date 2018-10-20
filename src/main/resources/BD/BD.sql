@@ -48,13 +48,8 @@ declare
     v_lanzamiento CANCION.FECHA_LANZAMIENTO%TYPE;
 begin
     for i in 1..1000000 loop
-<<<<<<< HEAD
         v_duracion:=DBMS_RANDOM.value(120,800);
         v_nombre:=DBMS_RANDOM.string('a',20);
-=======
-        v_duracion := DBMS_RANDOM.value(120,800);
-        v_nombre := DBMS_RANDOM.string('a',20);
->>>>>>> be1986db88ef5f9aab5049f1c15e98675c0e11e3
         
             select to_date(
                 TRUNC(
