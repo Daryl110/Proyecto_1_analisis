@@ -5,8 +5,6 @@
  */
 package com.eam.analisis.controlador;
 
-import java.util.Date;
-
 /**
  *
  * @author nick_
@@ -31,7 +29,63 @@ public class MetodosOrdenacionCadena {
         } while (permutacion);
     }
 
-    public static void ordenarBurbujaBi(String[] arreglo) {
+    public static void OrdenamientoInsercion(String array[]) {
+        int x, y;
+        String aux;
+        for (x = 1; x < array.length; x++) { // desde el segundo elemento hasta el final
+            aux = array[x]; // guardamos el elemento 
+            y = x - 1; // empezamos a comprobar con el anterior
+            while ((y >= 0) && (aux.compareTo(array[y])) < 0) { // mientras queden posiciones y el valor de aux sea menor que los de la izquierda
+                array[y + 1] = array[y];
+                y--;                   // se desplaza a la derecha
+            }
+            array[y + 1] = aux; // colocamos aux en su sitio
+        }
+    }
+
+    public static void OrdenamientoSeleccion(String array[]) {
+        int i, j, poss;
+        String aux, menor;
+        for (i = 0; i < array.length - 1; i++) { // tomamos como menor el primero
+            menor = array[i]; //  los elementos que quedan por ordenar
+            poss = i; // guardamos su posición
+            for (j = i + 1; j < array.length; j++) { // buscamos en el array algun elemento menor al actual
+                if (array[j].compareTo(menor) < 0) {
+                    menor = array[j];
+                    poss = j;
+                }
+            }
+            if (poss != i) { // si hay alguno menor se intercambia
+                aux = array[i];
+                array[i] = array[poss];
+                array[poss] = aux;
+            }
+        }
+    }
+
+    public static void OrdenamientoPeine(String array[]) {
+        int gap = array.length;
+        boolean permutación = true;
+        int actual;
+
+        while ((permutación) || (gap > 1)) {
+            permutación = false;
+            gap = (int) (gap / 1.3);
+            if (gap < 1) {
+                gap = 1;
+            }
+            for (actual = 0; actual < array.length - 1 - gap; actual++) {
+                if (array[actual].compareTo(array[actual + gap]) > 0) {
+                    permutación = true;
+                    // Intercambiamos los dos elementos
+                    String temp = array[actual];
+                    array[actual] = array[actual + gap];
+                    array[actual + gap] = temp;
+                }
+            }
+        }
+    }
+    public static void ordenarBurbujaBidireccional(String[] arreglo) {
         boolean permutacion;
         int actual = 0, direccion = 1;
         int comienzo = 1, fin = arreglo.length - 1;
@@ -132,13 +186,6 @@ public class MetodosOrdenacionCadena {
     public static void ordenarMezcla(String[] arreglo) {
         mergesort(arreglo, 0, arreglo.length - 1);
     }
-    
-    
-    /*
-        izq =0
-        der = arreglo.length-1
-    
-     */
 
     private static void mergesort(String A[], int izq, int der) {
         if (izq < der) {
