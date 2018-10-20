@@ -55,7 +55,7 @@ public class Main {
             fechas[i] = date;
         }
 
-        f.ordenarBurbuja(fechas);
+        f.mergesort(fechas, 0,fechas.length-1);
         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
 
         for (int i = 0; i < fechas.length; i++) {

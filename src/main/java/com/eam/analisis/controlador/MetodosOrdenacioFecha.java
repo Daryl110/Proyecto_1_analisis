@@ -30,4 +30,89 @@ public class MetodosOrdenacioFecha {
             // ya que el mayor ya estaria de ultimo
         } while (permutacion);
     }
+
+    public static void ordenarBurbujaBi(Date[] arreglo) {
+        boolean permutacion;
+        int actual = 0, direccion = 1;
+        int comienzo = 1, fin = arreglo.length - 1;
+        do {
+            permutacion = false;
+            while (((direccion == 1) && (actual < fin)) || ((direccion == -1) && (actual > comienzo))) {
+                actual += direccion;
+                if (arreglo[actual].compareTo(arreglo[actual - 1]) < 0) {
+                    Date temp = arreglo[actual];
+                    arreglo[actual] = arreglo[actual - 1];
+                    arreglo[actual - 1] = temp;
+                    permutacion = true;
+                }
+
+            }
+            if (direccion == 1) {
+                fin--;
+            } else {
+                comienzo++;
+            }
+            direccion = -direccion;
+        } while (permutacion);
+
+    }
+
+    public static void Gnome_sort(Date[] arreglo) {
+        for (int i = 0; i < arreglo.length; i++) {
+            burbuja(arreglo, i);
+        }
+    }
+
+    private static void burbuja(Date[] arreglo, int p) {
+        int j = p;
+        while ((j > 0) && (arreglo[j].compareTo(arreglo[j - 1]) < 0)) {
+            Date t = arreglo[j - 1];
+            arreglo[j - 1] = arreglo[j];
+            arreglo[j] = t;
+            j--;
+        }
+    }
+
+    /*
+        izq =0
+        der = arreglo.length-1
+    
+     */
+    public static void mergesort(Date A[], int izq, int der) {
+        if (izq < der) {
+            int m = (izq + der) / 2;
+            mergesort(A, izq, m);
+            mergesort(A, m + 1, der);
+            merge(A, izq, m, der);
+        }
+    }
+
+    /*
+    http://puntocomnoesunlenguaje.blogspot.com/2014/10/java-mergesort.html
+     */
+    private static void merge(Date A[], int izq, int m, int der) {
+        int i, j, k;
+        Date[] B = new Date[A.length]; //array auxiliar
+        for (i = izq; i <= der; i++) //copia ambas mitades en el array auxiliar
+        {
+            B[i] = A[i];
+        }
+
+        i = izq;
+        j = m + 1;
+        k = izq;
+        while (i <= m && j <= der) //copia el siguiente elemento más grande
+        {
+            if (B[i].compareTo(B[j])<=0) {
+                A[k++] = B[i++];
+            } else {
+                A[k++] = B[j++];
+            }
+        }
+        while (i <= m) //copia los elementos que quedan de la
+        {
+            A[k++] = B[i++]; //primera mitad (si los hay)
+        }
+
+    }
 }

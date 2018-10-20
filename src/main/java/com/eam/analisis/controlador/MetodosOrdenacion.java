@@ -8,7 +8,6 @@ package com.eam.analisis.controlador;
  */
 public class MetodosOrdenacion {
 
-
     public static void ordenarBurbuja(int[] arreglo) {
         int iteracion = 1;// establece el lugar hasta donde se iterará
         boolean permutacion;
@@ -53,7 +52,13 @@ public class MetodosOrdenacion {
 
     }
 
-    private static  void burbuja(int[] arreglo, int p) {
+    public static void Gnome_sort(int[] arreglo) {
+        for (int i = 0; i < arreglo.length; i++) {
+            burbuja(arreglo, i);
+        }
+    }
+
+    private static void burbuja(int[] arreglo, int p) {
         int j = p;
         while ((j > 0) && (arreglo[j] < arreglo[j - 1])) {
             int t = arreglo[j - 1];
@@ -63,17 +68,11 @@ public class MetodosOrdenacion {
         }
     }
 
-    public static void Gnome_sort(int[] arreglo) {
-        for (int i = 0; i < arreglo.length; i++) {
-            burbuja(arreglo, i);
-        }
-    }
-    
     /*
         izq =0
         der = arreglo.length-1
     
-    */
+     */
     public static void mergesort(int A[], int izq, int der) {
         if (izq < der) {
             int m = (izq + der) / 2;
@@ -82,9 +81,10 @@ public class MetodosOrdenacion {
             merge(A, izq, m, der);
         }
     }
+
     /*
     http://puntocomnoesunlenguaje.blogspot.com/2014/10/java-mergesort.html
-    */
+     */
     private static void merge(int A[], int izq, int m, int der) {
         int i, j, k;
         int[] B = new int[A.length]; //array auxiliar
@@ -108,7 +108,7 @@ public class MetodosOrdenacion {
         {
             A[k++] = B[i++]; //primera mitad (si los hay)
         }
-        
+
     }
 
     public static void ordenarShell(int[] arreglo) {
