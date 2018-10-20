@@ -42,9 +42,6 @@ public class Main {
         long sixMonthsAgo = (now.getTime() - 15552000000l);
         long today = now.getTime();
 
-        Date now = new Date();
-        long sixMonthsAgo = (now.getTime() - 15552000000l);
-        long today = now.getTime();
 
 
         
