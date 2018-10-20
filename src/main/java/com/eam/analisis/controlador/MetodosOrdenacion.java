@@ -26,7 +26,7 @@ public class MetodosOrdenacion {
         } while (permutacion);
     }
 
-    public static void ordenarBurbujaBi(int[] arreglo) {
+    public static void ordenarBurbujaBidireccional(int[] arreglo) {
         boolean permutacion;
         int actual = 0, direccion = 1;
         int comienzo = 1, fin = arreglo.length - 1;
@@ -52,13 +52,13 @@ public class MetodosOrdenacion {
 
     }
 
-    public static void Gnome_sort(int[] arreglo) {
+    public static void ordenarGnome(int[] arreglo) {
         for (int i = 0; i < arreglo.length; i++) {
             burbuja(arreglo, i);
         }
     }
-
-    private static void burbuja(int[] arreglo, int p) {
+    
+    private static  void burbuja(int[] arreglo, int p) {
         int j = p;
         while ((j > 0) && (arreglo[j] < arreglo[j - 1])) {
             int t = arreglo[j - 1];
@@ -67,13 +67,12 @@ public class MetodosOrdenacion {
             j--;
         }
     }
-
-    /*
-        izq =0
-        der = arreglo.length-1
     
-     */
-    public static void mergesort(int A[], int izq, int der) {
+    public static void ordenarMezcla(int[] arreglo){
+        mergesort(arreglo, 0, arreglo.length-1);
+    }
+    
+    private static void mergesort(int A[], int izq, int der) {
         if (izq < der) {
             int m = (izq + der) / 2;
             mergesort(A, izq, m);

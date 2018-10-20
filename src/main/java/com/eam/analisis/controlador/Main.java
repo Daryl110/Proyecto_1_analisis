@@ -21,7 +21,7 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        int x[] = {18, 16, 3, 7, 5, 19, 1, 8, 9, 2, 6, 13, 17, 14, 15, 12, 4, 11, 10, 20};
+//        int x[] = {18, 16, 3, 7, 5, 19, 1, 8, 9, 2, 6, 13, 17, 14, 15, 12, 4, 11, 10, 20};
         String cadena[] = {"h", "d", "s", "p", "i", "l", "g", "a", "e", "k", "j", "f", "o", "n", "m", "b", "q", "r", "c", "t"};
         Date fechas[] = new Date[10];
 
@@ -31,13 +31,13 @@ public class Main {
 
         MetodosOrdenacioFecha f = new MetodosOrdenacioFecha();
 
-        m.mergesort(x, 0, x.length - 1);
+//        m.mergesort(x, 0, x.length - 1);
 
-        n.ordenarBurbuja(cadena);
+//        n.ordenarBurbuja(cadena);
 
-        for (int i = 0; i < x.length; i++) {
-            System.out.print(x[i] + " - ");
-        }
+//        for (int i = 0; i < x.length; i++) {
+//            System.out.print(x[i] + " - ");
+//        }
         System.out.println(" ");
         for (int i = 0; i < cadena.length; i++) {
             System.out.print(cadena[i] + " - ");
@@ -45,23 +45,22 @@ public class Main {
 
         System.out.println(" ");
 
-        Date now = new Date();
-        long sixMonthsAgo = (now.getTime() - 15552000000l);
-        long today = now.getTime();
-
-        for (int i = 0; i < 10; i++) {
-            long ms = ThreadLocalRandom.current().nextLong(sixMonthsAgo, today);
-            Date date = new Date(ms);
-            fechas[i] = date;
-        }
+//        Date now = new Date();
+//        long sixMonthsAgo = (now.getTime() - 15552000000l);
+//        long today = now.getTime();
 
         f.mergesort(fechas, 0,fechas.length-1);
         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
+//        for (int i = 0; i < 10; i++) {
+//            long ms = ThreadLocalRandom.current().nextLong(sixMonthsAgo, today);
+//            Date date = new Date(ms);
+//            fechas[i] = date;
+//        }
 
-        for (int i = 0; i < fechas.length; i++) {
+//        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
 
-            System.out.print(formateador.format(fechas[i]));
-            System.out.print(" - ");
+        for (int i = 0; i < cadena.length; i++) {
+            System.out.print(cadena[i]+" - ");
         }
 
     }
