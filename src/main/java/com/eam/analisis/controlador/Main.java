@@ -3,9 +3,10 @@
  */
 package com.eam.analisis.controlador;
 
+import com.eam.analisis.dao.DAO;
+import com.eam.analisis.modelo.Cancion;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.ArrayList;
 
 /**
  * @author Daryl Ospina
@@ -16,55 +17,13 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
-//        int x[] = {18, 16, 3, 7, 5, 19, 1, 8, 9, 2, 6, 13, 17, 14, 15, 12, 4, 11, 10, 20};
-        String cadena[] = {"h", "d", "s", "p", "i", "l", "g", "a", "e", "k", "j", "f", "o", "n", "m", "b", "q", "r", "c", "t"};
-        Date fechas[] = new Date[10];
-
-        MetodosOrdenacion m = new MetodosOrdenacion();
-
-        MetodosOrdenacionCadena n = new MetodosOrdenacionCadena();
-
-        MetodosOrdenacionFecha f = new MetodosOrdenacionFecha();
-
-//        m.mergesort(x, 0, x.length - 1);
-//        n.ordenarBurbuja(cadena);
-//        for (int i = 0; i < x.length; i++) {
-//            System.out.print(x[i] + " - ");
-//        }
-//        System.out.println(" ");
-//        for (int i = 0; i < fechas.length; i++) {
-//            System.out.print(fechas[i] + " - ");
-//        }
-        System.out.println(" ");
-
-        Date now = new Date();
-        long sixMonthsAgo = (now.getTime() - 15552000000l);
-        long today = now.getTime();
-
-
-
-        
-        for (int i = 0; i < 10; i++) {
-            long ms = ThreadLocalRandom.current().nextLong(sixMonthsAgo, today);
-            Date date = new Date(ms);
-            fechas[i] = date;
+        DAO dao = new DAO("ConexionBD");
+        ArrayList<Cancion> lstCanciones = new ArrayList<>(dao.cargarConsulta("Select * from ANALISIS.CANCION WHERE ROWNUM <= 10", Cancion.class));
+        for (Cancion cancion : lstCanciones) {
+            System.out.println("Nombre: "+cancion.getNombre());
+            System.out.println("FechaLanzamiento: "+new SimpleDateFormat("yyyy/MM/dd").format(cancion.getFechaLanzamiento()));
+            System.out.println("Duracion: "+cancion.getDuracion());
         }
-
-        f.OrdenamientoInsercion(fechas);
-        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
-        
-        for (int i = 0; i < fechas.length; i++) {
-            System.out.print(formateador.format(fechas[i]) + " - ");
-        }
-        System.out.println(" ");
-
-        f.ordenarRapido(fechas);
-
-        for (int i = 0; i < fechas.length; i++) {
-            System.out.print(formateador.format(fechas[i]) + " - ");
-        }
-
     }
 
 }
