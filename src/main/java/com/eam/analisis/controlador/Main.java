@@ -31,9 +31,9 @@ public class Main {
 
         MetodosOrdenacioFecha f = new MetodosOrdenacioFecha();
 
-        m.mergesort(x, 0, x.length - 1);
+       // m.Or
 
-        n.ordenarBurbuja(cadena);
+        //n.ordenarBurbuja(cadena);
 
         for (int i = 0; i < x.length; i++) {
             System.out.print(x[i] + " - ");
@@ -55,7 +55,7 @@ public class Main {
             fechas[i] = date;
         }
 
-        f.ordenarBurbuja(fechas);
+        f.OrdenamientoInsercion(fechas);
         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
 
         for (int i = 0; i < fechas.length; i++) {

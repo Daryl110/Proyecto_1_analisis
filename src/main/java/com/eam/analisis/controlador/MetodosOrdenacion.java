@@ -8,7 +8,6 @@ package com.eam.analisis.controlador;
  */
 public class MetodosOrdenacion {
 
-
     public static void ordenarBurbuja(int[] arreglo) {
         int iteracion = 1;// establece el lugar hasta donde se iterará
         boolean permutacion;
@@ -53,7 +52,7 @@ public class MetodosOrdenacion {
 
     }
 
-    private static  void burbuja(int[] arreglo, int p) {
+    private static void burbuja(int[] arreglo, int p) {
         int j = p;
         while ((j > 0) && (arreglo[j] < arreglo[j - 1])) {
             int t = arreglo[j - 1];
@@ -68,12 +67,12 @@ public class MetodosOrdenacion {
             burbuja(arreglo, i);
         }
     }
-    
+
     /*
         izq =0
         der = arreglo.length-1
     
-    */
+     */
     public static void mergesort(int A[], int izq, int der) {
         if (izq < der) {
             int m = (izq + der) / 2;
@@ -82,9 +81,10 @@ public class MetodosOrdenacion {
             merge(A, izq, m, der);
         }
     }
+
     /*
     http://puntocomnoesunlenguaje.blogspot.com/2014/10/java-mergesort.html
-    */
+     */
     private static void merge(int A[], int izq, int m, int der) {
         int i, j, k;
         int[] B = new int[A.length]; //array auxiliar
@@ -108,7 +108,7 @@ public class MetodosOrdenacion {
         {
             A[k++] = B[i++]; //primera mitad (si los hay)
         }
-        
+
     }
 
     public static void ordenarShell(int[] arreglo) {
@@ -163,6 +163,62 @@ public class MetodosOrdenacion {
                 //Hasta que quede un solo numero (Simulacion)
                 quickSort(arreglo, i, pivote - 1);//desde inicial hasta pivote-1
                 quickSort(arreglo, pivote + 1, d);//desde pivote+1 hasta final
+            }
+        }
+    }
+
+    public static void OrdenamientoInsercion(int array[]) {
+        int x, y;
+        int aux = 0;
+        for (x = 1; x < array.length; x++) { // desde el segundo elemento hasta el final
+            aux = array[x]; // guardamos el elemento 
+            y = x - 1; // empezamos a comprobar con el anterior
+            while ((y >= 0) && (aux < array[y])) { // mientras queden posiciones y el valor de aux sea menor que los de la izquierda
+                array[y + 1] = array[y];
+                y--;                   // se desplaza a la derecha
+            }
+            array[y + 1] = aux; // colocamos aux en su sitio
+        }
+    }
+
+    public static void OrdenamientoSeleccion(int array[]) {
+        int i, j, menor, poss, aux;
+        for (i = 0; i < array.length - 1; i++) { // tomamos como menor el primero
+            menor = array[i]; //  los elementos que quedan por ordenar
+            poss = i; // guardamos su posición
+            for (j = i + 1; j < array.length; j++) { // buscamos en el array algun elemento menor al actual
+                if (array[j] < menor) {
+                    menor = array[j];
+                    poss = j;
+                }
+            }
+            if (poss != i) { // si hay alguno menor se intercambia
+                aux = array[i];
+                array[i] = array[poss];
+                array[poss] = aux;
+            }
+        }
+    }
+
+    public static void OrdenamientoPeine(int array[]) {
+        int gap = array.length;
+        boolean permutación = true;
+        int actual;
+
+        while ((permutación) || (gap > 1)) {
+            permutación = false;
+            gap = (int) (gap / 1.3);
+            if (gap < 1) {
+                gap = 1;
+            }
+            for (actual = 0; actual < array.length - gap; actual++) {
+                if (array[actual] > array[actual + gap]) {
+                    permutación = true;
+                    // Intercambiamos los dos elementos
+                    int temp = array[actual];
+                    array[actual] = array[actual + gap];
+                    array[actual + gap] = temp;
+                }
             }
         }
     }
