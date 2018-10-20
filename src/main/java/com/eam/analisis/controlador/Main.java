@@ -45,22 +45,24 @@ public class Main {
 
         System.out.println(" ");
 
-//        Date now = new Date();
-//        long sixMonthsAgo = (now.getTime() - 15552000000l);
-//        long today = now.getTime();
+        Date now = new Date();
+        long sixMonthsAgo = (now.getTime() - 15552000000l);
+        long today = now.getTime();
 
-        f.mergesort(fechas, 0,fechas.length-1);
+
+        
+        for (int i = 0; i < 10; i++) {
+            long ms = ThreadLocalRandom.current().nextLong(sixMonthsAgo, today);
+            Date date = new Date(ms);
+            fechas[i] = date;
+        }
+
+
         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
-//        for (int i = 0; i < 10; i++) {
-//            long ms = ThreadLocalRandom.current().nextLong(sixMonthsAgo, today);
-//            Date date = new Date(ms);
-//            fechas[i] = date;
-//        }
-
-//        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
 
         for (int i = 0; i < cadena.length; i++) {
-            System.out.print(cadena[i]+" - ");
+            System.out.println(formateador.format(cadena[i]));
+            System.out.print(" - ");
         }
 
     }
