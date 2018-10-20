@@ -165,4 +165,60 @@ public class MetodosOrdenacion {
             }
         }
     }
+
+    public static void OrdenamientoInsercion(int array[]) {
+        int x, y;
+        int aux = 0;
+        for (x = 1; x < array.length; x++) { // desde el segundo elemento hasta el final
+            aux = array[x]; // guardamos el elemento 
+            y = x - 1; // empezamos a comprobar con el anterior
+            while ((y >= 0) && (aux < array[y])) { // mientras queden posiciones y el valor de aux sea menor que los de la izquierda
+                array[y + 1] = array[y];
+                y--;                   // se desplaza a la derecha
+            }
+            array[y + 1] = aux; // colocamos aux en su sitio
+        }
+    }
+
+    public static void OrdenamientoSeleccion(int array[]) {
+        int i, j, menor, poss, aux;
+        for (i = 0; i < array.length - 1; i++) { // tomamos como menor el primero
+            menor = array[i]; //  los elementos que quedan por ordenar
+            poss = i; // guardamos su posición
+            for (j = i + 1; j < array.length; j++) { // buscamos en el array algun elemento menor al actual
+                if (array[j] < menor) {
+                    menor = array[j];
+                    poss = j;
+                }
+            }
+            if (poss != i) { // si hay alguno menor se intercambia
+                aux = array[i];
+                array[i] = array[poss];
+                array[poss] = aux;
+            }
+        }
+    }
+
+    public static void OrdenamientoPeine(int array[]) {
+        int gap = array.length;
+        boolean permutación = true;
+        int actual;
+
+        while ((permutación) || (gap > 1)) {
+            permutación = false;
+            gap = (int) (gap / 1.3);
+            if (gap < 1) {
+                gap = 1;
+            }
+            for (actual = 0; actual < array.length - gap; actual++) {
+                if (array[actual] > array[actual + gap]) {
+                    permutación = true;
+                    // Intercambiamos los dos elementos
+                    int temp = array[actual];
+                    array[actual] = array[actual + gap];
+                    array[actual + gap] = temp;
+                }
+            }
+        }
+    }
 }
