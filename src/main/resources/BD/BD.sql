@@ -1,3 +1,4 @@
+DROP TRIGGER TRIGER_INCREMENT;
 DROP TABLE CANCION CASCADE CONSTRAINTS;
 DROP TABLE ESTADISTICA_ESTRUCTURA CASCADE CONSTRAINTS;
 DROP TABLE ESTADISTICA_ORDENACION CASCADE CONSTRAINTS;
@@ -31,3 +32,31 @@ CREATE TABLE ESTADISTICA_ORDENACION (
     NUMERO_CANCIONES NUMBER(38,0),
     TIEMPO NUMBER(38,0)
 );
+
+CREATE OR REPLACE TRIGGER TRIGER_INCREMENT 
+    BEFORE INSERT ON CANCION
+    FOR EACH ROW
+    BEGIN
+        SELECT ID.NEXTVAL
+        INTO   :new.ID
+        FROM   dual;
+    END;
+
+declare
+    v_nombre CANCION.NOMBRE%TYPE;
+    v_duracion CANCION.DURACION%TYPE;
+    v_lanzamiento CANCION.FECHA_LANZAMIENTO%TYPE;
+begin
+    for i in 1..1000000 loop
+        v_duracion := DBMS_RANDOM.value(120,800);
+        v_nombre := DBMS_RANDOM.string('a',20);
+        
+            select to_date(
+                TRUNC(
+                    DBMS_RANDOM.value(to_char(date '1950-01-01','J'), to_char(date '2019-01-31','J'))
+                ),'J'
+            ) into v_lanzamiento from dual;
+        insert into CANCION (NOMBRE, DURACION, FECHA_LANZAMIENTO)
+        values (v_nombre, v_duracion, v_lanzamiento);
+    end loop;
+end;

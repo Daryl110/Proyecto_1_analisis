@@ -3,10 +3,6 @@
  */
 package com.eam.analisis.controlador;
 
-import com.eam.analisis.dao.DAO;
-import com.eam.analisis.dao.IDAO;
-import com.eam.analisis.modelo.Cancion;
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
@@ -21,7 +17,7 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        int x[] = {18, 16, 3, 7, 5, 19, 1, 8, 9, 2, 6, 13, 17, 14, 15, 12, 4, 11, 10, 20};
+//        int x[] = {18, 16, 3, 7, 5, 19, 1, 8, 9, 2, 6, 13, 17, 14, 15, 12, 4, 11, 10, 20};
         String cadena[] = {"h", "d", "s", "p", "i", "l", "g", "a", "e", "k", "j", "f", "o", "n", "m", "b", "q", "r", "c", "t"};
         Date fechas[] = new Date[10];
 
@@ -29,20 +25,17 @@ public class Main {
 
         MetodosOrdenacionCadena n = new MetodosOrdenacionCadena();
 
-        MetodosOrdenacioFecha f = new MetodosOrdenacioFecha();
+        MetodosOrdenacionFecha f = new MetodosOrdenacionFecha();
 
-       // m.Or
-
-        //n.ordenarBurbuja(cadena);
-
-        for (int i = 0; i < x.length; i++) {
-            System.out.print(x[i] + " - ");
-        }
-        System.out.println(" ");
-        for (int i = 0; i < cadena.length; i++) {
-            System.out.print(cadena[i] + " - ");
-        }
-
+//        m.mergesort(x, 0, x.length - 1);
+//        n.ordenarBurbuja(cadena);
+//        for (int i = 0; i < x.length; i++) {
+//            System.out.print(x[i] + " - ");
+//        }
+//        System.out.println(" ");
+//        for (int i = 0; i < fechas.length; i++) {
+//            System.out.print(fechas[i] + " - ");
+//        }
         System.out.println(" ");
 
         Date now = new Date();
@@ -57,11 +50,16 @@ public class Main {
 
         f.OrdenamientoInsercion(fechas);
         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
+        
+        for (int i = 0; i < fechas.length; i++) {
+            System.out.print(formateador.format(fechas[i]) + " - ");
+        }
+        System.out.println(" ");
+
+        f.ordenarRapido(fechas);
 
         for (int i = 0; i < fechas.length; i++) {
-
-            System.out.print(formateador.format(fechas[i]));
-            System.out.print(" - ");
+            System.out.print(formateador.format(fechas[i]) + " - ");
         }
 
     }
