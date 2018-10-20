@@ -54,14 +54,15 @@ public class DAO implements IDAO {
     }
 
     @Override
-    public List cargar(String nombreClase) {
+    public List cargar(Class nombreClase) {
         EntityManager manager = null;
         List lista = null;
 
         try {
             manager = getEntityManager();
-            Query query = manager.createQuery("SELECT p FROM " + nombreClase + " p");
-            lista = query.getResultList();
+            javax.persistence.criteria.CriteriaQuery cq = manager.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(nombreClase));
+            lista =  manager.createQuery(cq).getResultList();
         } catch (Exception e) {
             System.out.println("[Error] - " + e);
         } finally {

@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 public interface IDAO<T> {
     
     public abstract Object cargar(String nombreClase,String campos);
-    public abstract List cargar(String nombreClase);
+    public abstract List cargar(Class<T> clase);
     public abstract Response guardar(Object objeto);
     public abstract Response modificar(Object objeto);
     public abstract Object buscar(Object valorId,Class<T> clase);

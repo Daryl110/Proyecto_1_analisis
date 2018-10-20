@@ -60,3 +60,5 @@ begin
         values (v_nombre, v_duracion, v_lanzamiento);
     end loop;
 end;
+
+SELECT * FROM CANCION WHERE ROWNUM<=3;
