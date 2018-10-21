@@ -9,6 +9,8 @@ import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -23,7 +25,7 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "EstadisticaEstructura.findAll", query = "SELECT e FROM EstadisticaEstructura e")
     , @NamedQuery(name = "EstadisticaEstructura.findById", query = "SELECT e FROM EstadisticaEstructura e WHERE e.id = :id")
-    , @NamedQuery(name = "EstadisticaEstructura.findByTipoDato", query = "SELECT e FROM EstadisticaEstructura e WHERE e.tipoDato = :tipoDato")
+    , @NamedQuery(name = "EstadisticaEstructura.findByTipoOperacion", query = "SELECT e FROM EstadisticaEstructura e WHERE e.tipoOperacion = :tipoOperacion")
     , @NamedQuery(name = "EstadisticaEstructura.findByTipoEstructura", query = "SELECT e FROM EstadisticaEstructura e WHERE e.tipoEstructura = :tipoEstructura")
     , @NamedQuery(name = "EstadisticaEstructura.findByNumeroCanciones", query = "SELECT e FROM EstadisticaEstructura e WHERE e.numeroCanciones = :numeroCanciones")
     , @NamedQuery(name = "EstadisticaEstructura.findByTiempo", query = "SELECT e FROM EstadisticaEstructura e WHERE e.tiempo = :tiempo")})
@@ -33,10 +35,11 @@ public class EstadisticaEstructura implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
-    @Column(name = "ID")
+    @GeneratedValue(generator = "ID_ESTRUCTURAS", strategy = GenerationType.AUTO)
+    @Column(name = "ID_ESTRUCTURAS")
     private BigDecimal id;
-    @Column(name = "TIPO_DATO")
-    private String tipoDato;
+    @Column(name = "TIPO_OPERACION")
+    private String tipoOperacion;
     @Column(name = "TIPO_ESTRUCTURA")
     private String tipoEstructura;
     @Column(name = "NUMERO_CANCIONES")
@@ -51,6 +54,13 @@ public class EstadisticaEstructura implements Serializable {
         this.id = id;
     }
 
+    public EstadisticaEstructura(String tipoDato, String tipoEstructura, BigInteger numeroCanciones, BigInteger tiempo) {
+        this.tipoOperacion = tipoDato;
+        this.tipoEstructura = tipoEstructura;
+        this.numeroCanciones = numeroCanciones;
+        this.tiempo = tiempo;
+    }
+
     public BigDecimal getId() {
         return id;
     }
@@ -60,11 +70,11 @@ public class EstadisticaEstructura implements Serializable {
     }
 
     public String getTipoDato() {
-        return tipoDato;
+        return tipoOperacion;
     }
 
     public void setTipoDato(String tipoDato) {
-        this.tipoDato = tipoDato;
+        this.tipoOperacion = tipoDato;
     }
 
     public String getTipoEstructura() {
