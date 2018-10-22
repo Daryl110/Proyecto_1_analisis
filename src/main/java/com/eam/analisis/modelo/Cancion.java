@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
 @Table(name = "CANCION")
 @NamedQueries({
     @NamedQuery(name = "Cancion.findAll", query = "SELECT c FROM Cancion c")})
-public class Cancion implements Serializable {
+public class Cancion implements Serializable, Comparable<Cancion> {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -60,7 +60,7 @@ public class Cancion implements Serializable {
         this.duracion = duracion;
         this.fechaLanzamiento = fechaLanzamiento;
     }
-    
+
     public Cancion(String nombre, BigInteger duracion, Date fechaLanzamiento) {
         this.nombre = nombre;
         this.duracion = duracion;
@@ -121,7 +121,21 @@ public class Cancion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.eam.analisis.modelo.Cancion[ id=" + id + " ]";
+        return "ID: " + id + " Nombre: " + nombre + " Duracion: " + duracion + " Fecha lanzamiento: " + fechaLanzamiento + "";
     }
-    
+
+    @Override
+    public int compareTo(Cancion cancion) {
+        int a = Integer.parseInt((this.id + ""));
+        int b = Integer.parseInt((cancion.getId() + ""));
+        if (a==b) {
+            return 0;
+        }
+        if (a>b) {
+            return 1;
+        }else{
+            return -1;
+        }
+    }
+
 }
