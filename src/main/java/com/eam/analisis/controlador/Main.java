@@ -10,14 +10,15 @@ import com.eam.analisis.vistas.FrmPrincipal;
  * @author Daryl Ospina
  */
 public class Main {
-    
+
+    //https://www.journaldev.com/1260/collections-in-java-tutorial
     public static DAO dao = new DAO("ConexionBD");
-    
+
     public static void main(String[] args) {
         iniciarVentanaPrincipal();
     }
-    
-    public static void iniciarVentanaPrincipal(){
+
+    public static void iniciarVentanaPrincipal() {
         FrmPrincipal ventanaPrincipal = new FrmPrincipal();
         ventanaPrincipal.setLocationRelativeTo(null);
         ventanaPrincipal.setVisible(true);

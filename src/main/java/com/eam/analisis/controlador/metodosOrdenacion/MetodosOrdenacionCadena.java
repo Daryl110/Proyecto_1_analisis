@@ -11,6 +11,76 @@ package com.eam.analisis.controlador.metodosOrdenacion;
  */
 public class MetodosOrdenacionCadena {
 
+    public static void ordenarMonticulo(String[] arreglo) {
+        /* Este método realiza un heapsort en el lugar. Comenzando
+        desde el principio del arreglo, el arreglo se intercambia
+        en un montón máximo binario. Luego se eliminan los elementos.
+        desde el montón, y añadido a la parte delantera de la ordenada
+        sección del arreglo. 
+        
+        Inserción en el montón */
+        for (int heapsize = 0; heapsize < arreglo.length; heapsize++) {
+            /* Paso uno en agregar un elemento al montón en el
+                Coloque ese elemento al final del arreglo de pila
+                En este caso, el elemento ya está allí. */
+            int n = heapsize; // el índice del int insertado
+            while (n > 0) { // until we reach the root of the heap
+                int p = (n - 1) / 2; // Hasta que lleguemos a la raíz del montón.
+                if (arreglo[n].compareTo(arreglo[p]) > 0) { // el índice del int insertado
+                    cambiarPosicion(arreglo, n, p); // el niño es más grande que el padre
+                    n = p; // comprobar padre
+                } else // el padre es más grande que el niño
+                {
+                    break; // todo es bueno en el montón
+                }
+            }
+        }
+
+        /* Eliminación de montón */
+        for (int heapsize = arreglo.length; heapsize > 0;) {
+            cambiarPosicion(arreglo, 0, --heapsize); // intercambiar raíz con el último elemento de montón
+            int n = 0; // índice del elemento que se mueve hacia abajo del árbol
+            while (true) {
+                int left = (n * 2) + 1;
+                if (left >= heapsize) // nodo no tiene hijo izquierdo
+                {
+                    break; // llegó al fondo el montón es heapified
+                }
+                int right = left + 1;
+                if (right >= heapsize) { // El nodo tiene un hijo izquierdo, pero ningún hijo derecho
+                    if (arreglo[left].compareTo(arreglo[n]) > 0) // si el hijo izquierdo es mayor que el nodo
+                    {
+                        cambiarPosicion(arreglo, left, n); // intercambiar hijo izquierdo con nodo
+                    }
+                    break; // el montón es heapified
+                }
+                if (arreglo[left].compareTo(arreglo[n]) > 0) { // (left > n)
+                    if (arreglo[left].compareTo(arreglo[right]) > 0) { // (left > right) & (left > n)
+                        cambiarPosicion(arreglo, left, n);
+                        n = left; // continuar la recursión en el niño izquierdo
+                    } else { // (right > left > n)
+                        cambiarPosicion(arreglo, right, n);
+                        n = right; // continuar la recursión en el niño derecho
+                    }
+                } else { // (n > left)
+                    if (arreglo[right].compareTo(arreglo[n]) > 0) { // (right > n > left)
+                        cambiarPosicion(arreglo, right, n);
+                        n = right;// continuar la recursión en el niño derecho
+                    } else { // (n > left) & (n > right)
+                        break; // El nodo es mayor que los dos hijos, por lo que es heapified
+                    }
+                }
+            }
+        }
+    }
+
+    private static void cambiarPosicion(String[] array, int i, int j) {
+        String temp;
+        temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+
     public static void ordenarBurbuja(String[] arreglo) {
         int iteracion = 1;// establece el lugar hasta donde se iterará
         boolean permutacion;
@@ -19,9 +89,7 @@ public class MetodosOrdenacionCadena {
             for (int i = 0; i < arreglo.length - iteracion; i++) {
                 if (arreglo[i].compareTo(arreglo[i + 1]) > 0) {
                     permutacion = true;
-                    String aux = arreglo[i];
-                    arreglo[i] = arreglo[i + 1];
-                    arreglo[i + 1] = aux;
+                    cambiarPosicion(arreglo, i, i + 1);
                 }
             }
             iteracion++;// elimina la iteracion de una posicion,
@@ -29,7 +97,7 @@ public class MetodosOrdenacionCadena {
         } while (permutacion);
     }
 
-    public static void OrdenamientoInsercion(String array[]) {
+    public static void ordenarInsercion(String array[]) {
         int x, y;
         String aux;
         for (x = 1; x < array.length; x++) { // desde el segundo elemento hasta el final
@@ -43,7 +111,7 @@ public class MetodosOrdenacionCadena {
         }
     }
 
-    public static void OrdenamientoSeleccion(String array[]) {
+    public static void ordenarSeleccion(String array[]) {
         int i, j, poss;
         String aux, menor;
         for (i = 0; i < array.length - 1; i++) { // tomamos como menor el primero
@@ -56,14 +124,12 @@ public class MetodosOrdenacionCadena {
                 }
             }
             if (poss != i) { // si hay alguno menor se intercambia
-                aux = array[i];
-                array[i] = array[poss];
-                array[poss] = aux;
+                cambiarPosicion(array, i, poss);
             }
         }
     }
 
-    public static void OrdenamientoPeine(String array[]) {
+    public static void ordenarPeine(String array[]) {
         int gap = array.length;
         boolean permutación = true;
         int actual;
@@ -78,13 +144,12 @@ public class MetodosOrdenacionCadena {
                 if (array[actual].compareTo(array[actual + gap]) > 0) {
                     permutación = true;
                     // Intercambiamos los dos elementos
-                    String temp = array[actual];
-                    array[actual] = array[actual + gap];
-                    array[actual + gap] = temp;
+                    cambiarPosicion(array, actual, actual + gap);
                 }
             }
         }
     }
+
     public static void ordenarBurbujaBidireccional(String[] arreglo) {
         boolean permutacion;
         int actual = 0, direccion = 1;
@@ -94,9 +159,7 @@ public class MetodosOrdenacionCadena {
             while (((direccion == 1) && (actual < fin)) || ((direccion == -1) && (actual > comienzo))) {
                 actual += direccion;
                 if (arreglo[actual].compareTo(arreglo[actual - 1]) < 0) {
-                    String temp = arreglo[actual];
-                    arreglo[actual] = arreglo[actual - 1];
-                    arreglo[actual - 1] = temp;
+                    cambiarPosicion(arreglo, actual, actual - 1);
                     permutacion = true;
                 }
 
@@ -120,9 +183,7 @@ public class MetodosOrdenacionCadena {
     private static void burbuja(String[] arreglo, int p) {
         int j = p;
         while ((j > 0) && (arreglo[j].compareTo(arreglo[j - 1]) < 0)) {
-            String t = arreglo[j - 1];
-            arreglo[j - 1] = arreglo[j];
-            arreglo[j] = t;
+            cambiarPosicion(arreglo, j - 1, j);
             j--;
         }
     }
@@ -140,9 +201,7 @@ public class MetodosOrdenacionCadena {
                         // si las posiciones son menores o iguales, se rompera el ciclo
                         break;
                     } else {//De lo contrario se cambiaran las posiciones
-                        String aux = arreglo[j];
-                        arreglo[j] = arreglo[k];
-                        arreglo[k] = aux;
+                        cambiarPosicion(arreglo, j, k);
                         j -= salto;
                     }
                 }
@@ -171,9 +230,7 @@ public class MetodosOrdenacionCadena {
                 posIzquierda++;// cambiara de posicion si todo esta bien
             }            // por el lado izquierdo
             if (posDerecha != posIzquierda) {//Cambiara la posicion si hay alguna inconsistencia de mayor o menor
-                aux = arreglo[posDerecha];
-                arreglo[posDerecha] = arreglo[posIzquierda];
-                arreglo[posIzquierda] = aux;
+                cambiarPosicion(arreglo, posDerecha, posIzquierda);
             }
             if (posIzquierda == posDerecha) {//Partira el arreglo en dos partes con el fin de hacer lo mismo con los subconjuntos
                 //Hasta que quede un solo numero (Simulacion)

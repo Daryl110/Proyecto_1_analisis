@@ -1,9 +1,16 @@
 package com.eam.analisis.vistas;
 
-import com.eam.analisis.controlador.ListasPivoteadas;
+import com.eam.analisis.controlador.TablasPivoteadas;
 import com.eam.analisis.controlador.Main;
-import com.eam.analisis.controlador.estructuras.ListaSimple;
+import com.eam.analisis.controlador.estructuras.CtlArbolAvl;
+import com.eam.analisis.controlador.estructuras.CtlListaDoble;
+import com.eam.analisis.controlador.estructuras.CtlListaSimple;
+import com.eam.analisis.modelo.Cancion;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -18,7 +25,7 @@ public class FrmEstructuras extends javax.swing.JFrame {
 
     public FrmEstructuras() {
         initComponents();
-        tblEstructuras.setModel(ListasPivoteadas.listarEstructuras());
+        this.listarEstructuras();
     }
 
     @SuppressWarnings("unchecked")
@@ -34,6 +41,7 @@ public class FrmEstructuras extends javax.swing.JFrame {
         tblEstructuras = new javax.swing.JTable();
         btnAtras = new javax.swing.JButton();
         pnlGrafica = new javax.swing.JPanel();
+        cbFiltroCantidad = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,11 +52,11 @@ public class FrmEstructuras extends javax.swing.JFrame {
             }
         });
 
-        cbTipoEstructura.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione una estructura", "Lista Simple" }));
+        cbTipoEstructura.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione una estructura", "Lista Simple", "Lista Doble", "Arbol AVL" }));
 
         cbCantidaD.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione una cantidad", "100", "1000", "10000", "100000", "500000", "1000000" }));
 
-        cbCrud.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione una operación", "Insert", "Update", "Delete", "busquedad binomal", "busquedad secuencial" }));
+        cbCrud.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione una operación", "Insert", "Update", "Delete", "busquedad binaria", "busquedad secuencial" }));
 
         pnlTabla.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)));
 
@@ -78,7 +86,7 @@ public class FrmEstructuras extends javax.swing.JFrame {
             pnlTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTablaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -102,6 +110,13 @@ public class FrmEstructuras extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        cbFiltroCantidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione el filtro de cantidad", "100", "1000", "10000", "100000", "500000", "1000000", "Busquedas" }));
+        cbFiltroCantidad.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbFiltroCantidadItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -109,7 +124,6 @@ public class FrmEstructuras extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCalcular, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cbTipoEstructura, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 300, Short.MAX_VALUE)
@@ -117,10 +131,13 @@ public class FrmEstructuras extends javax.swing.JFrame {
                         .addGap(300, 300, 300)
                         .addComponent(cbCrud, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(pnlTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(pnlTabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbFiltroCantidad, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlGrafica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(btnAtras, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnAtras, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnCalcular, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -131,11 +148,14 @@ public class FrmEstructuras extends javax.swing.JFrame {
                     .addComponent(cbTipoEstructura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbCantidaD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbCrud, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(5, 5, 5)
                 .addComponent(btnCalcular)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlTabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cbFiltroCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pnlTabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(pnlGrafica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAtras)
@@ -153,43 +173,138 @@ public class FrmEstructuras extends javax.swing.JFrame {
     private void btnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularActionPerformed
         int estructura = cbTipoEstructura.getSelectedIndex();
         if (estructura != 0) {
-            int cantidadCanciones = cbCantidaD.getSelectedIndex();
-            if (cantidadCanciones != 0) {
-                int operacion = cbCrud.getSelectedIndex();
-                if (operacion != 0) {
-                    String strEstructura = cbTipoEstructura.getSelectedItem().toString();
+            int operacion = cbCrud.getSelectedIndex();
+            if (operacion != 0) {
+                String strOperacion = cbCrud.getSelectedItem().toString();
+                String strEstructura = cbTipoEstructura.getSelectedItem().toString();
+                int cantidadCanciones = cbCantidaD.getSelectedIndex();
+                if (cantidadCanciones != 0) {
                     cantidadCanciones = Integer.parseInt(cbCantidaD.getSelectedItem().toString());
-                    String strOperacion = cbCrud.getSelectedItem().toString();
                     switch (strEstructura) {
                         case "Lista Simple":
                             switch (strOperacion) {
                                 case "Insert":
-                                    ListaSimple.add(cantidadCanciones);
+                                    CtlListaSimple.add(cantidadCanciones);
+                                    break;
+                                case "Update":
+                                    CtlListaSimple.set(cantidadCanciones);
+                                    break;
+                                case "Delete":
+                                    CtlListaSimple.remove(cantidadCanciones);
+                                    break;
+                                case "busquedad binaria":
+                                    JOptionPane.showMessageDialog(this, "No esta permitda la busqueda binaria\n"
+                                            + "en este tipo de estructura de datos");
+                                    break;
+                                case "busquedad secuencial":
+                                    CtlListaSimple.buscar();
+                                    break;
+                            }
+                            break;
+                        case "Lista Doble":
+                            switch (strOperacion) {
+                                case "Insert":
+                                    CtlListaDoble.add(cantidadCanciones);
+                                    break;
+                                case "Update":
+                                    CtlListaDoble.set(cantidadCanciones);
+                                    break;
+                                case "Delete":
+                                    CtlListaDoble.remove(cantidadCanciones);
+                                    break;
+                                case "busquedad binaria":
+                                    JOptionPane.showMessageDialog(this, "No esta permitda la busqueda binaria\n"
+                                            + "en este tipo de estructura de datos");
+                                    break;
+                                case "busquedad secuencial":
+                                    CtlListaDoble.buscarSecuencial();
+                                    break;
+                            }
+                            break;
+                        case "Arbol AVL":
+                            switch (strOperacion) {
+                                case "Insert":
+                                    CtlArbolAvl.add(cantidadCanciones);
+                                    break;
+                                case "Update":
+                                    CtlArbolAvl.set(cantidadCanciones);
+                                    break;
+                                case "Delete":
+                                    CtlArbolAvl.remove(cantidadCanciones);
+                                    break;
+                                case "busquedad binaria":
+                                    CtlArbolAvl.buscar();
+                                    break;
+                                case "busquedad secuencial":
+                                    JOptionPane.showMessageDialog(this, "No esta permitda la busqueda secuencial\n"
+                                            + "en este tipo de estructura de datos");
                                     break;
                             }
                             break;
                     }
-                    tblEstructuras.setModel(ListasPivoteadas.listarEstructuras());
+                    this.listarEstructuras();
                 } else {
-                    JOptionPane.showMessageDialog(this, "No se ha seleccionado una operacion valida");
+                    if (strOperacion.equals("busquedad binaria") || strOperacion.equals("busquedad secuencial")) {
+                        switch (strEstructura) {
+                            case "Lista Simple":
+                                switch (strOperacion) {
+                                    case "busquedad binaria":
+                                        JOptionPane.showMessageDialog(this, "No esta permitda la busqueda binaria\n"
+                                                + "en este tipo de estructura de datos");
+                                        break;
+                                    case "busquedad secuencial":
+                                        CtlListaSimple.buscar();
+                                        break;
+                                }
+                                break;
+                            case "Lista Doble":
+                                switch (strOperacion) {
+                                    case "busquedad binaria":
+                                        JOptionPane.showMessageDialog(this, "No esta permitda la busqueda binaria\n"
+                                                + "en este tipo de estructura de datos");
+                                        break;
+                                    case "busquedad secuencial":
+                                        CtlListaDoble.buscarSecuencial();
+                                        break;
+                                }
+                                break;
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Debe seleccionar una cantidad valida de datos");
+                    }
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Debe seleccionar una cantidad valida de datos");
+                JOptionPane.showMessageDialog(this, "No se ha seleccionado una operacion valida");
             }
         } else {
             JOptionPane.showMessageDialog(this, "No se ha seleccionado una estructura de datos");
         }
     }//GEN-LAST:event_btnCalcularActionPerformed
 
+    private void cbFiltroCantidadItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbFiltroCantidadItemStateChanged
+        this.listarEstructuras();
+    }//GEN-LAST:event_cbFiltroCantidadItemStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnCalcular;
     private javax.swing.JComboBox<String> cbCantidaD;
     private javax.swing.JComboBox<String> cbCrud;
+    private javax.swing.JComboBox<String> cbFiltroCantidad;
     private javax.swing.JComboBox<String> cbTipoEstructura;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnlGrafica;
     private javax.swing.JPanel pnlTabla;
     private javax.swing.JTable tblEstructuras;
     // End of variables declaration//GEN-END:variables
+
+    private void listarEstructuras() {
+        if (cbFiltroCantidad.getSelectedIndex() != 0 && cbFiltroCantidad.getSelectedIndex() <= 6) {
+            tblEstructuras.setModel(TablasPivoteadas.listarEstructuras(Integer.parseInt(cbFiltroCantidad.getSelectedItem().toString())));
+        } else if (cbFiltroCantidad.getSelectedIndex() > 6) {
+            tblEstructuras.setModel(TablasPivoteadas.listarEstructuras(cbFiltroCantidad.getSelectedItem().toString()));
+        } else {
+            tblEstructuras.setModel(new DefaultTableModel());
+        }
+    }
 }
