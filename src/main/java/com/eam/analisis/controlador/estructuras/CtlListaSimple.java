@@ -6,11 +6,11 @@ package com.eam.analisis.controlador.estructuras;
 import com.eam.analisis.controlador.Main;
 import com.eam.analisis.modelo.Cancion;
 import com.eam.analisis.modelo.EstadisticaEstructura;
+import eam.librerias.estructuras.lista.simple.Nodo;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
@@ -20,13 +20,13 @@ import javax.swing.JOptionPane;
  */
 public class CtlListaSimple {
 
-    public static LinkedList<Cancion> canciones = new LinkedList<>();
+    public static LinkedList<Nodo<Cancion>> canciones = new LinkedList<>();
 
     public static void add(int limit) {
         ArrayList<Cancion> array = new ArrayList(Main.dao.cargarConsulta("SELECT * FROM CANCION WHERE ROWNUM <= " + limit, Cancion.class));
         long time = System.nanoTime();
         array.forEach((cancion) -> {
-            canciones.add(cancion);
+            canciones.add(new Nodo<>(cancion));
         });
         time = System.nanoTime() - time;
         Main.dao.guardar(new EstadisticaEstructura("insert", "ListaSimple", new BigInteger(limit + ""), new BigInteger(time + "")));
@@ -34,11 +34,10 @@ public class CtlListaSimple {
 
     public static void mostrar(int limit) {
         if (!canciones.isEmpty()) {
-            Iterator<Cancion> iterador = canciones.iterator();
-            Cancion auxCancion;
-            while (iterador.hasNext() && limit != 0) {
-                auxCancion = iterador.next();
-                System.out.println(auxCancion.getNombre());
+            Nodo<Cancion> auxCancion = canciones.getFirst();
+            while (auxCancion != null && limit != 0) {
+                System.out.println(auxCancion.getElemento().getNombre());
+                auxCancion = auxCancion.getSiguiente();
                 limit--;
             }
         } else {
@@ -123,14 +122,12 @@ public class CtlListaSimple {
         if (camposCambiados != 0) {
             cancion = new Cancion(new BigDecimal(id + ""), nombre, new BigInteger(duracion + ""), fechaLanzamiento);
             int cantidad = limit;
-            Iterator<Cancion> iterador = canciones.iterator();
             long time = System.nanoTime();
-            Cancion auxCancion;
-            while (iterador.hasNext() && limit != 0) {
-                auxCancion = iterador.next();
-                auxCancion.setNombre(cancion.getNombre());
-                auxCancion.setDuracion(cancion.getDuracion());
-                auxCancion.setFechaLanzamiento(cancion.getFechaLanzamiento());
+            Nodo<Cancion> auxCancion = canciones.getFirst();
+            while (auxCancion != null && limit != 0) {
+                auxCancion.getElemento().setNombre(cancion.getNombre());
+                auxCancion.getElemento().setDuracion(cancion.getDuracion());
+                auxCancion.getElemento().setFechaLanzamiento(cancion.getFechaLanzamiento());
                 limit--;
             }
             time = System.nanoTime() - time;
@@ -156,15 +153,13 @@ public class CtlListaSimple {
             buscar();
             return;
         }
-        Iterator<Cancion> iterador = canciones.iterator();
         long time = System.nanoTime();
-        Cancion aux;
-        int c = 1;
-        while (iterador.hasNext()) {
-            aux = iterador.next();
-            if (aux.getId().compareTo(new BigDecimal(idCancion + "")) == 0) {
+        Nodo<Cancion> aux = canciones.getFirst();
+        while (aux != null) {
+            if (aux.getElemento().getId().compareTo(new BigDecimal(idCancion + "")) == 0) {
                 break;
             }
+            aux = aux.getSiguiente();
         }
         time = System.nanoTime() - time;
         Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "ListaSimple", new BigInteger(1 + ""), new BigInteger(time + "")));

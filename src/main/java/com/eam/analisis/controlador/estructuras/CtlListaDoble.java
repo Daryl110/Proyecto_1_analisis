@@ -7,11 +7,11 @@ import eam.librerias.estructuras.listaDoble.Nodo;
 import com.eam.analisis.controlador.Main;
 import com.eam.analisis.modelo.Cancion;
 import com.eam.analisis.modelo.EstadisticaEstructura;
-import eam.librerias.estructuras.listaDoble.ListaDoble;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,27 +19,30 @@ import javax.swing.JOptionPane;
  * @author Daryl Ospina
  */
 public class CtlListaDoble {
-    
-    public static ListaDoble<Cancion> canciones = new ListaDoble<>();
-    
+
+    public static LinkedList<Nodo<Cancion>> canciones = new LinkedList<>();
+
     public static void add(int limit) {
         ArrayList<Cancion> array = new ArrayList(Main.dao.cargarConsulta("SELECT * FROM CANCION WHERE ROWNUM <= " + limit, Cancion.class));
         long time = System.nanoTime();
-        array.forEach((cancion) -> {
-            canciones.add(new Nodo<>(cancion));
-        });
+        Nodo<Cancion> aux = new Nodo<>(array.get(0));
+        for (int i = 1; i < array.size(); i++) {
+            canciones.add(aux);
+            aux.setSiguiente(new Nodo<>(array.get(i)));
+            aux = aux.getSiguiente();
+        }
         time = System.nanoTime() - time;
         Main.dao.guardar(new EstadisticaEstructura("insert", "ListaDoble", new BigInteger(limit + ""), new BigInteger(time + "")));
     }
-    
-    public static void mostrar(){
-        Nodo<Cancion> nodoAux = canciones.getInicio();
+
+    public static void mostrar() {
+        Nodo<Cancion> nodoAux = canciones.getFirst();
         while (nodoAux != null) {
             System.out.println(nodoAux.getElemento().getId());
             nodoAux = nodoAux.getSiguiente();
         }
     }
-    
+
     public static void remove(int limit) {
         if (!canciones.isEmpty()) {
             if (limit > canciones.size()) {
@@ -49,7 +52,7 @@ public class CtlListaDoble {
             int numCanciones = limit;
             long time = System.nanoTime();
             while (limit > 0) {
-                canciones.remove(limit-1);
+                canciones.remove();
                 limit--;
             }
             time = System.nanoTime() - time;
@@ -58,7 +61,7 @@ public class CtlListaDoble {
             JOptionPane.showMessageDialog(null, "La Lista esta vacia");
         }
     }
-    
+
     public static void set(int limit) {
         if (canciones.isEmpty()) {
             JOptionPane.showMessageDialog(null, "La Lista esta vacia");
@@ -118,7 +121,7 @@ public class CtlListaDoble {
             cancion = new Cancion(new BigDecimal(id + ""), nombre, new BigInteger(duracion + ""), fechaLanzamiento);
             int cantidad = limit;
             long time = System.nanoTime();
-            Nodo<Cancion> auxCancion = canciones.getInicio();
+            Nodo<Cancion> auxCancion = canciones.getFirst();
             while (auxCancion != null && limit > 0) {
                 auxCancion.getElemento().setNombre(cancion.getNombre());
                 auxCancion.getElemento().setDuracion(cancion.getDuracion());
@@ -132,7 +135,7 @@ public class CtlListaDoble {
             JOptionPane.showMessageDialog(null, "No se ha cambiado ningun campo");
         }
     }
-    
+
     public static void buscarSecuencial() {
         if (canciones.isEmpty()) {
             JOptionPane.showMessageDialog(null, "La Lista esta vacia");
@@ -150,10 +153,9 @@ public class CtlListaDoble {
             return;
         }
         long time = System.nanoTime();
-        Nodo<Cancion> aux = canciones.getInicio();
+        Nodo<Cancion> aux = canciones.getFirst();
         while (aux != null) {
-            if (aux.getElemento().getId().compareTo(new BigDecimal(idCancion+"")) == 0) {
-                System.out.println("id: "+aux.getElemento().getId());
+            if (aux.getElemento().getId().compareTo(new BigDecimal(idCancion + "")) == 0) {
                 break;
             }
             aux = aux.getSiguiente();
@@ -161,7 +163,7 @@ public class CtlListaDoble {
         time = System.nanoTime() - time;
         Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "ListaDoble", new BigInteger(1 + ""), new BigInteger(time + "")));
     }
-    
+
     //Implementando...
     public static void buscarBinario() {
         if (canciones.isEmpty()) {
@@ -180,15 +182,23 @@ public class CtlListaDoble {
             return;
         }
         long time = System.nanoTime();
-        Nodo<Cancion> aux = canciones.getInicio();
-        while (aux != null) {
-            if (aux.getElemento().getId().compareTo(new BigDecimal(idCancion+"")) == 0) {
-                System.out.println("id: "+aux.getElemento().getId());
-                break;
-            }
-            aux = aux.getSiguiente();
-        }
+        Nodo<Cancion> aux = canciones.getFirst();
+        aux = buscarBinaria(aux, new BigDecimal(idCancion + ""));
         time = System.nanoTime() - time;
-        Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "ListaDoble", new BigInteger(1 + ""), new BigInteger(time + "")));
+        System.out.println("Nombre encontrado: " + aux.getElemento().getNombre());
+        System.out.println("ID: " + aux.getElemento().getId());
+        System.out.println("Time: " + time);
+//        Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "ListaDoble", new BigInteger(1 + ""), new BigInteger(time + "")));
+    }
+
+    public static Nodo<Cancion> buscarBinaria(Nodo<Cancion> aux, BigDecimal id) {
+        if (aux != null) {
+            if (id.compareTo(aux.getElemento().getId()) == 0) {
+                return aux;
+            }
+        } else {
+            return null;
+        }
+        return buscarBinaria(aux.getSiguiente(), id);
     }
 }
