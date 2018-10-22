@@ -4,6 +4,8 @@
 package com.eam.analisis.controlador;
 
 import java.util.HashMap;
+import com.eam.analisis.dao.DAO;
+import com.eam.analisis.vistas.FrmPrincipal;
 
 /**
  * @author Daryl Ospina
@@ -14,6 +16,16 @@ public class Main {
         CtlArbolBinario arbol = new CtlArbolBinario();
         arbol.llenarArbol(10);
         arbol.mostrarArbol();
+    //https://www.journaldev.com/1260/collections-in-java-tutorial
+    public static DAO dao = new DAO("ConexionBD");
+
+    public static void main(String[] args) {
+        iniciarVentanaPrincipal();
     }
 
+    public static void iniciarVentanaPrincipal() {
+        FrmPrincipal ventanaPrincipal = new FrmPrincipal();
+        ventanaPrincipal.setLocationRelativeTo(null);
+        ventanaPrincipal.setVisible(true);
+    }
 }
