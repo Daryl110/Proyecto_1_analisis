@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.eam.analisis.controlador;
+package com.eam.analisis.controlador.estructuras;
 
 import com.eam.analisis.dao.DAO;
 import com.eam.analisis.modelo.Cancion;

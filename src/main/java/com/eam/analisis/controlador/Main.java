@@ -17,6 +17,7 @@ public class Main {
     public static void main(String[] args) {
 
         iniciarVentanaPrincipal();
+        System.out.println("Daryl la perra");
     }
 
     public static void iniciarVentanaPrincipal() {
