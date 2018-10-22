@@ -39,6 +39,9 @@ public class FrmEstructuras extends javax.swing.JFrame {
         pnlTabla = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblEstructuras = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         btnAtras = new javax.swing.JButton();
         pnlGrafica = new javax.swing.JPanel();
         cbFiltroCantidad = new javax.swing.JComboBox<>();
@@ -73,20 +76,41 @@ public class FrmEstructuras extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblEstructuras);
 
+        jLabel1.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel1.setText("NOTA:");
+
+        jLabel2.setText("En la tabla solo se tienen en cuenta el promedio de cada operacion ralizada, dentro de una estructura");
+
+        jLabel3.setText("de datos.");
+
         javax.swing.GroupLayout pnlTablaLayout = new javax.swing.GroupLayout(pnlTabla);
         pnlTabla.setLayout(pnlTablaLayout);
         pnlTablaLayout.setHorizontalGroup(
             pnlTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTablaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
+                .addGroup(pnlTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
+                    .addGroup(pnlTablaLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlTablaLayout.setVerticalGroup(
             pnlTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTablaLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTablaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
+                .addGroup(pnlTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addGap(0, 0, 0)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -292,6 +316,9 @@ public class FrmEstructuras extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbCrud;
     private javax.swing.JComboBox<String> cbFiltroCantidad;
     private javax.swing.JComboBox<String> cbTipoEstructura;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnlGrafica;
     private javax.swing.JPanel pnlTabla;
