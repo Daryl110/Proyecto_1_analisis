@@ -35,7 +35,7 @@ public class CtlListaDoble {
     public static void mostrar(){
         Nodo<Cancion> nodoAux = canciones.getInicio();
         while (nodoAux != null) {
-            System.out.println(nodoAux.getValor().getId());
+            System.out.println(nodoAux.getElemento().getId());
             nodoAux = nodoAux.getSiguiente();
         }
     }
@@ -120,9 +120,9 @@ public class CtlListaDoble {
             long time = System.nanoTime();
             Nodo<Cancion> auxCancion = canciones.getInicio();
             while (auxCancion != null && limit > 0) {
-                auxCancion.getValor().setNombre(cancion.getNombre());
-                auxCancion.getValor().setDuracion(cancion.getDuracion());
-                auxCancion.getValor().setFechaLanzamiento(cancion.getFechaLanzamiento());
+                auxCancion.getElemento().setNombre(cancion.getNombre());
+                auxCancion.getElemento().setDuracion(cancion.getDuracion());
+                auxCancion.getElemento().setFechaLanzamiento(cancion.getFechaLanzamiento());
                 limit--;
                 auxCancion = auxCancion.getSiguiente();
             }
@@ -152,8 +152,8 @@ public class CtlListaDoble {
         long time = System.nanoTime();
         Nodo<Cancion> aux = canciones.getInicio();
         while (aux != null) {
-            if (aux.getValor().getId().compareTo(new BigDecimal(idCancion+"")) == 0) {
-                System.out.println("id: "+aux.getValor().getId());
+            if (aux.getElemento().getId().compareTo(new BigDecimal(idCancion+"")) == 0) {
+                System.out.println("id: "+aux.getElemento().getId());
                 break;
             }
             aux = aux.getSiguiente();
@@ -182,8 +182,8 @@ public class CtlListaDoble {
         long time = System.nanoTime();
         Nodo<Cancion> aux = canciones.getInicio();
         while (aux != null) {
-            if (aux.getValor().getId().compareTo(new BigDecimal(idCancion+"")) == 0) {
-                System.out.println("id: "+aux.getValor().getId());
+            if (aux.getElemento().getId().compareTo(new BigDecimal(idCancion+"")) == 0) {
+                System.out.println("id: "+aux.getElemento().getId());
                 break;
             }
             aux = aux.getSiguiente();

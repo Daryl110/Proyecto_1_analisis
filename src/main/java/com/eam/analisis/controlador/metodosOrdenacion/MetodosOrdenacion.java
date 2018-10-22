@@ -10,7 +10,7 @@ import com.eam.analisis.modelo.Cancion;
  */
 public class MetodosOrdenacion {
 
-    public static void ordenarMonticulo(int[] array) {
+    public static void ordenarMonticulo(Cancion[] array) {
         /* Este método realiza un heapsort en el lugar. Comenzando
         desde el principio del arreglo, el arreglo se intercambia
         en un montón máximo binario. Luego se eliminan los elementos.
@@ -25,7 +25,7 @@ public class MetodosOrdenacion {
             int n = heapsize; // el índice del int insertado
             while (n > 0) { // until we reach the root of the heap
                 int p = (n - 1) / 2; // Hasta que lleguemos a la raíz del montón.
-                if (array[n] > array[p]) { // el índice del int insertado
+                if (Integer.parseInt(array[n].getDuracion()+"") > Integer.parseInt(array[p].getDuracion()+"")) { // el índice del int insertado
                     cambiarPosicion(array, n, p); // el niño es más grande que el padre
                     n = p; // comprobar padre
                 } else // el padre es más grande que el niño
@@ -47,14 +47,14 @@ public class MetodosOrdenacion {
                 }
                 int right = left + 1;
                 if (right >= heapsize) { // El nodo tiene un hijo izquierdo, pero ningún hijo derecho
-                    if (array[left] > array[n]) // si el hijo izquierdo es mayor que el nodo
+                    if (Integer.parseInt(array[left].getDuracion()+"") > Integer.parseInt(array[n].getDuracion()+"")) // si el hijo izquierdo es mayor que el nodo
                     {
                         cambiarPosicion(array, left, n); // intercambiar hijo izquierdo con nodo
                     }
                     break; // el montón es heapified
                 }
-                if (array[left] > array[n]) { // (left > n)
-                    if (array[left] > array[right]) { // (left > right) & (left > n)
+                if (Integer.parseInt(array[left].getDuracion()+"") > Integer.parseInt(array[n].getDuracion()+"")) { // (left > n)
+                    if (Integer.parseInt(array[left].getDuracion()+"") > Integer.parseInt(array[right].getDuracion()+"")) { // (left > right) & (left > n)
                         cambiarPosicion(array, left, n);
                         n = left; // continuar la recursión en el niño izquierdo
                     } else { // (right > left > n)
@@ -62,7 +62,7 @@ public class MetodosOrdenacion {
                         n = right; // continuar la recursión en el niño derecho
                     }
                 } else { // (n > left)
-                    if (array[right] > array[n]) { // (right > n > left)
+                    if (Integer.parseInt(array[right].getDuracion()+"") > Integer.parseInt(array[n].getDuracion()+"")) { // (right > n > left)
                         cambiarPosicion(array, right, n);
                         n = right;// continuar la recursión en el niño derecho
                     } else { // (n > left) & (n > right)
@@ -73,14 +73,14 @@ public class MetodosOrdenacion {
         }
     }
 
-    private static void cambiarPosicion(int[] array, int i, int j) {
-        int temp;
+    private static void cambiarPosicion(Cancion[] array, int i, int j) {
+        Cancion temp;
         temp = array[i];
         array[i] = array[j];
         array[j] = temp;
     }
 
-    public static void ordenarBurbuja(int[] arreglo) {
+    public static void ordenarBurbuja(Cancion[] arreglo) {
         int iteracion = 1;// establece el lugar hasta donde se iterará
         boolean permutacion;
         do {
@@ -104,7 +104,7 @@ public class MetodosOrdenacion {
             permutacion = false;
             while (((direccion == 1) && (actual < fin)) || ((direccion == -1) && (actual > comienzo))) {
                 actual += direccion;
-                if (arreglo[actual] < arreglo[actual - 1]) {
+                if (Integer.parseInt(arreglo[actual].getDuracion()+"") < Integer.parseInt(arreglo[actual - 1].getDuracion()+"")) {
                     cambiarPosicion(arreglo, actual, actual - 1);
                     permutacion = true;
                 }
@@ -126,19 +126,19 @@ public class MetodosOrdenacion {
         }
     }
 
-    private static void burbuja(int[] arreglo, int p) {
+    private static void burbuja(Cancion[] arreglo, int p) {
         int j = p;
-        while ((j > 0) && (arreglo[j] < arreglo[j - 1])) {
+        while ((j > 0) && (Integer.parseInt(arreglo[j].getDuracion()+"") < Integer.parseInt(arreglo[j - 1].getDuracion()+""))) {
             cambiarPosicion(arreglo, j - 1, j);
             j--;
         }
     }
 
-    public static void ordenarMezcla(int[] arreglo) {
+    public static void ordenarMezcla(Cancion[] arreglo) {
         mergesort(arreglo, 0, arreglo.length - 1);
     }
 
-    private static void mergesort(int A[], int izq, int der) {
+    private static void mergesort(Cancion A[], int izq, int der) {
         if (izq < der) {
             int m = (izq + der) / 2;
             mergesort(A, izq, m);
@@ -227,7 +227,7 @@ public class MetodosOrdenacion {
         }
     }
 
-    public static void ordenarInsercion(int array[]) {
+    public static void ordenarInsercion(Cancion array[]) {
         int x, y;
         Cancion aux = null;
         for (x = 1; x < array.length; x++) { // desde el segundo elemento hasta el final
@@ -241,8 +241,9 @@ public class MetodosOrdenacion {
         }
     }
 
-    public static void ordenarSeleccion(int array[]) {
-        int i, j, menor, poss;
+    public static void ordenarSeleccion(Cancion array[]) {
+        int i, j,poss;    
+        Cancion menor;
         for (i = 0; i < array.length - 1; i++) { // tomamos como menor el primero
             menor = array[i]; //  los elementos que quedan por ordenar
             poss = i; // guardamos su posición
@@ -258,7 +259,7 @@ public class MetodosOrdenacion {
         }
     }
 
-    public static void ordenarPeine(int array[]) {
+    public static void ordenarPeine(Cancion array[]) {
         int gap = array.length;
         boolean permutación = true;
         int actual;

@@ -14,6 +14,76 @@ import java.util.Date;
  */
 public class MetodosOrdenacionFecha {
 
+    public static void ordenarMonticulo(Cancion[] arreglo) {
+        /* Este método realiza un heapsort en el lugar. Comenzando
+        desde el principio del arreglo, el arreglo se intercambia
+        en un montón máximo binario. Luego se eliminan los elementos.
+        desde el montón, y añadido a la parte delantera de la ordenada
+        sección del arreglo. 
+        
+        Inserción en el montón */
+        for (int heapsize = 0; heapsize < arreglo.length; heapsize++) {
+            /* Paso uno en agregar un elemento al montón en el
+                Coloque ese elemento al final del arreglo de pila
+                En este caso, el elemento ya está allí. */
+            int n = heapsize; // el índice del int insertado
+            while (n > 0) { // until we reach the root of the heap
+                int p = (n - 1) / 2; // Hasta que lleguemos a la raíz del montón.
+                if (arreglo[n].getFechaLanzamiento().compareTo(arreglo[p].getFechaLanzamiento()) > 0) { // el índice del int insertado
+                    cambiarPosicion(arreglo, n, p); // el niño es más grande que el padre
+                    n = p; // comprobar padre
+                } else // el padre es más grande que el niño
+                {
+                    break; // todo es bueno en el montón
+                }
+            }
+        }
+
+        /* Eliminación de montón */
+        for (int heapsize = arreglo.length; heapsize > 0;) {
+            cambiarPosicion(arreglo, 0, --heapsize); // intercambiar raíz con el último elemento de montón
+            int n = 0; // índice del elemento que se mueve hacia abajo del árbol
+            while (true) {
+                int left = (n * 2) + 1;
+                if (left >= heapsize) // nodo no tiene hijo izquierdo
+                {
+                    break; // llegó al fondo el montón es heapified
+                }
+                int right = left + 1;
+                if (right >= heapsize) { // El nodo tiene un hijo izquierdo, pero ningún hijo derecho
+                    if (arreglo[left].getFechaLanzamiento().compareTo(arreglo[n].getFechaLanzamiento()) > 0) // si el hijo izquierdo es mayor que el nodo
+                    {
+                        cambiarPosicion(arreglo, left, n); // intercambiar hijo izquierdo con nodo
+                    }
+                    break; // el montón es heapified
+                }
+                if (arreglo[left].getFechaLanzamiento().compareTo(arreglo[n].getFechaLanzamiento()) > 0) { // (left > n)
+                    if (arreglo[left].getFechaLanzamiento().compareTo(arreglo[right].getFechaLanzamiento()) > 0) { // (left > right) & (left > n)
+                        cambiarPosicion(arreglo, left, n);
+                        n = left; // continuar la recursión en el niño izquierdo
+                    } else { // (right > left > n)
+                        cambiarPosicion(arreglo, right, n);
+                        n = right; // continuar la recursión en el niño derecho
+                    }
+                } else { // (n > left)
+                    if (arreglo[right].getFechaLanzamiento().compareTo(arreglo[n].getFechaLanzamiento()) > 0) { // (right > n > left)
+                        cambiarPosicion(arreglo, right, n);
+                        n = right;// continuar la recursión en el niño derecho
+                    } else { // (n > left) & (n > right)
+                        break; // El nodo es mayor que los dos hijos, por lo que es heapified
+                    }
+                }
+            }
+        }
+    }
+
+    private static void cambiarPosicion(Cancion[] array, int i, int j) {
+        Cancion temp;
+        temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+
     public static void ordenarBurbuja(Cancion[] arreglo) {
         int iteracion = 1;// establece el lugar hasta donde se iterará
         boolean permutacion;
@@ -74,10 +144,10 @@ public class MetodosOrdenacionFecha {
         }
     }
 
-    public static void ordenarMezcla(Cancion[] arreglo){
-        mergesort(arreglo, 0, arreglo.length-1);
+    public static void ordenarMezcla(Cancion[] arreglo) {
+        mergesort(arreglo, 0, arreglo.length - 1);
     }
-    
+
     private static void mergesort(Cancion A[], int izq, int der) {
         if (izq < der) {
             int m = (izq + der) / 2;
@@ -103,7 +173,7 @@ public class MetodosOrdenacionFecha {
         k = izq;
         while (i <= m && j <= der) //copia el siguiente elemento más grande
         {
-            if (B[i].getFechaLanzamiento().compareTo(B[j].getFechaLanzamiento())<=0) {
+            if (B[i].getFechaLanzamiento().compareTo(B[j].getFechaLanzamiento()) <= 0) {
                 A[k++] = B[i++];
             } else {
                 A[k++] = B[j++];
@@ -114,7 +184,7 @@ public class MetodosOrdenacionFecha {
             A[k++] = B[i++]; //primera mitad (si los hay)
         }
     }
-    
+
     public static void ordenarRapido(Cancion[] arreglo) {
         quickSort(arreglo, 0, arreglo.length - 1);
     }
@@ -146,7 +216,7 @@ public class MetodosOrdenacionFecha {
             }
         }
     }
-    
+
     public static void ordenarShell(Cancion[] arreglo) {
         int salto = arreglo.length / 2;//Salto a ralizar para tomar valor a comparar
         while (salto > 0) {//Mientras el salto sea diferente de 0 se seguira ordenando

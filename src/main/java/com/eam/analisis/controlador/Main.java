@@ -12,14 +12,10 @@ import com.eam.analisis.vistas.FrmPrincipal;
  */
 public class Main {
 
-    public static void main(String[] args) {
-        CtlArbolBinario arbol = new CtlArbolBinario();
-        arbol.llenarArbol(10);
-        arbol.mostrarArbol();
-    //https://www.journaldev.com/1260/collections-in-java-tutorial
     public static DAO dao = new DAO("ConexionBD");
 
     public static void main(String[] args) {
+
         iniciarVentanaPrincipal();
     }
 
