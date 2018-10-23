@@ -352,10 +352,10 @@ public class FrmEstructuras extends javax.swing.JFrame {
                                     CtlArreglo.actualizarArreglo(cantidadCanciones);
                                     break;
                                 case "Delete":
-                                    CtlArray.removerArray(cantidadCanciones);
+                                    CtlArreglo.removeArreglo(cantidadCanciones);
                                     break;
                                 case "busquedad binaria":
-                                    JOptionPane.showMessageDialog(this, "No esta permitda la busqueda secuencial\n"
+                                    JOptionPane.showMessageDialog(this, "No esta permitda la busqueda binomial\n"
                                             + "en este tipo de estructura de datos");
                                     break;
                                 case "busquedad secuencial":

@@ -135,7 +135,7 @@ public class CtlCola {
             }
             organizarCola(cola, colaAux);
             time = System.nanoTime() - time;
-            Main.dao.guardar(new EstadisticaEstructura("update", "Pila", new BigInteger(capacida + ""), new BigInteger(time + "")));
+            Main.dao.guardar(new EstadisticaEstructura("update", "Cola", new BigInteger(capacida + ""), new BigInteger(time + "")));
             JOptionPane.showMessageDialog(null, "Se han modificado " + capacida + " con la estructura de la cancion:\n"
                     + "Nombre: " + nombre + "\n"
                     + "Duracion: " + duracion + "\n"

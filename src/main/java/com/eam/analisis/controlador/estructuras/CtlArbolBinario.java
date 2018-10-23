@@ -153,7 +153,7 @@ public class CtlArbolBinario {
         for (Cancion cancion : arbol) {
             if (Integer.parseInt(cancion.getId() + "") == idCancion) {
                 time = System.nanoTime() - time;
-                Main.dao.guardar(new EstadisticaEstructura("Busqueda Binaria", "ArbolAVL", new BigInteger(limit + ""), new BigInteger(time + "")));
+                Main.dao.guardar(new EstadisticaEstructura("Busqueda Binaria", "Arbol", new BigInteger(limit + ""), new BigInteger(time + "")));
                 JOptionPane.showMessageDialog(null, "Se ha encontrado la cancion\n"
                         + "Nombre: " + cancion.getNombre() + "\n"
                         + "Duracion: " + cancion.getDuracion() + "\n"
@@ -162,7 +162,7 @@ public class CtlArbolBinario {
             }
         }
         time = System.nanoTime() - time;
-        Main.dao.guardar(new EstadisticaEstructura("Busqueda Binaria", "ArbolAVL", new BigInteger(limit + ""), new BigInteger(time + "")));
+        Main.dao.guardar(new EstadisticaEstructura("Busqueda Binaria", "Arbol", new BigInteger(limit + ""), new BigInteger(time + "")));
         JOptionPane.showMessageDialog(null, "No se ha encontrado el valor");
 
     }

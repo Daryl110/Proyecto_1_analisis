@@ -11,10 +11,10 @@ import javax.swing.table.DefaultTableModel;
 public class TablasPivoteadas {
 
     public static DefaultTableModel listarEstructuras(Object filtro) {
-        String[] columnas = {"Operacion", "Lista Simple", "Lista Doble", "ArbolAVL"};
+        String[] columnas = {"Operacion", "Lista Simple", "Lista Doble", "ArbolAVL","Arbol","Arreglo","ArrayList","Cola","Hash","Pila"};
         DefaultTableModel modelo = new DefaultTableModel(new Object[][]{}, columnas);
 
-        String query = "SELECT TIPO_OPERACION, NVL(\"'ListaSimple'\",0), NVL(\"'ListaDoble'\",0), NVL(\"'ArbolAVL'\",0) FROM "
+        String query = "SELECT TIPO_OPERACION, NVL(\"'ListaSimple'\",0), NVL(\"'ListaDoble'\",0), NVL(\"'ArbolAVL'\",0),NVL(\"'Arbol'\",0),NVL(\"'Arreglo'\",0),NVL(\"'ArrayList'\",0),NVL(\"'Cola'\",0),NVL(\"'Hash'\",0),NVL(\"'Pila'\",0) FROM "
                 + "( "
                 + "    SELECT EE.TIPO_OPERACION, EE.TIPO_ESTRUCTURA, TIEMPO FROM ESTADISTICA_ESTRUCTURA EE "
                 + "    WHERE EE.NUMERO_CANCIONES=" + filtro + " "
@@ -22,7 +22,7 @@ public class TablasPivoteadas {
                 + "PIVOT "
                 + "( "
                 + "    AVG(TIEMPO) "
-                + "    FOR TIPO_ESTRUCTURA IN ('ListaSimple','ListaDoble','ArbolAVL') "
+                + "    FOR TIPO_ESTRUCTURA IN ('ListaSimple','ListaDoble','ArbolAVL','Arbol','Arreglo','ArrayList','Cola','Hash','Pila') "
                 + ")";
 
         ArrayList<Object[]> resulSet = new ArrayList<>(Main.dao.cargarConsulta(query, null));
@@ -32,7 +32,13 @@ public class TablasPivoteadas {
                 arreglo[0],
                 new BigDecimal(arreglo[1] + "").setScale(2, BigDecimal.ROUND_HALF_UP),
                 new BigDecimal(arreglo[2] + "").setScale(2, BigDecimal.ROUND_HALF_UP),
-                new BigDecimal(arreglo[3] + "").setScale(2, BigDecimal.ROUND_HALF_UP)
+                new BigDecimal(arreglo[3] + "").setScale(2, BigDecimal.ROUND_HALF_UP),
+                new BigDecimal(arreglo[4] + "").setScale(2, BigDecimal.ROUND_HALF_UP),
+                new BigDecimal(arreglo[5] + "").setScale(2, BigDecimal.ROUND_HALF_UP),
+                new BigDecimal(arreglo[6] + "").setScale(2, BigDecimal.ROUND_HALF_UP),
+                new BigDecimal(arreglo[7] + "").setScale(2, BigDecimal.ROUND_HALF_UP),
+                new BigDecimal(arreglo[8] + "").setScale(2, BigDecimal.ROUND_HALF_UP),
+                new BigDecimal(arreglo[9] + "").setScale(2, BigDecimal.ROUND_HALF_UP)
             });
         });
         if (resulSet.isEmpty()) {
