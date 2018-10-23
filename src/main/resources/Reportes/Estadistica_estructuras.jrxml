@@ -12,8 +12,10 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="numCanciones" class="java.lang.Integer"/>
 	<queryString language="SQL">
 		<![CDATA[select TIPO_OPERACION operacion, TIPO_ESTRUCTURA estructura, avg(TIEMPO) tiempo from ESTADISTICA_ESTRUCTURA
+where NUMERO_CANCIONES=$P{numCanciones}
 GROUP by TIPO_OPERACION,TIPO_ESTRUCTURA]]>
 	</queryString>
 	<field name="OPERACION" class="java.lang.String">

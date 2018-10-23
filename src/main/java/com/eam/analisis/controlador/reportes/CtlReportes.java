@@ -37,12 +37,14 @@ public class CtlReportes {
         }
     }
     
-    public static void graficarEstructuras(){
+    public static void graficarEstructuras(int limit){
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("numCanciones", limit);
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             Connection cone = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "Analisis", "1094971007");
             JasperReport jr = JasperCompileManager.compileReport("./src/main/resources/Reportes/Estadistica_estructuras.jrxml");
-            JasperPrint jp = JasperFillManager.fillReport(jr, null, cone);
+            JasperPrint jp = JasperFillManager.fillReport(jr, parametros, cone);
             JasperViewer jv = new JasperViewer(jp, false);
             jv.setLocationRelativeTo(null);
             jv.setVisible(true);
