@@ -131,7 +131,8 @@ public class CtlArray {
             JOptionPane.showMessageDialog(null, "No se ha cambiado ningun campo");
         }
     }
-        public static void buscar(int limit) {
+
+    public static void buscar(int limit) {
         if (listaCancion.isEmpty()) {
             JOptionPane.showMessageDialog(null, "la pila esta vacia");
             return;
@@ -149,11 +150,17 @@ public class CtlArray {
         }
         long tiempo = System.nanoTime();
         Cancion aux = listaCancion.get(idCancion);
-        tiempo = System.nanoTime() - tiempo;
-        Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "ArrayList", new BigInteger(limit + ""), new BigInteger(tiempo + "")));
-        JOptionPane.showMessageDialog(null, "Se ha encontrado la cancion\n"
-                + "Nombre: " + aux.getNombre() + "\n"
-                + "Duracion: " + aux.getDuracion() + "\n"
-                + "Fecha Lanzamiento: " + aux.getFechaLanzamiento());
+        if (aux == null) {
+            tiempo = System.nanoTime() - tiempo;
+            Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "ArrayList", new BigInteger(limit + ""), new BigInteger(tiempo + "")));
+            JOptionPane.showMessageDialog(null, "No se ha encontrado");
+        } else {
+            tiempo = System.nanoTime() - tiempo;
+            Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "ArrayList", new BigInteger(limit + ""), new BigInteger(tiempo + "")));
+            JOptionPane.showMessageDialog(null, "Se ha encontrado la cancion\n"
+                    + "Nombre: " + aux.getNombre() + "\n"
+                    + "Duracion: " + aux.getDuracion() + "\n"
+                    + "Fecha Lanzamiento: " + aux.getFechaLanzamiento());
+        }
     }
 }

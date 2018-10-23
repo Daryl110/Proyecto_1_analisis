@@ -3,7 +3,9 @@ package com.eam.analisis.vistas;
 import com.eam.analisis.controlador.TablasPivoteadas;
 import com.eam.analisis.controlador.Main;
 import com.eam.analisis.controlador.estructuras.CtlArbolAvl;
+import com.eam.analisis.controlador.estructuras.CtlArbolBinario;
 import com.eam.analisis.controlador.estructuras.CtlArray;
+import com.eam.analisis.controlador.estructuras.CtlArreglo;
 import com.eam.analisis.controlador.estructuras.CtlCola;
 import com.eam.analisis.controlador.estructuras.CtlHash;
 import com.eam.analisis.controlador.estructuras.CtlListaDoble;
@@ -59,7 +61,7 @@ public class FrmEstructuras extends javax.swing.JFrame {
             }
         });
 
-        cbTipoEstructura.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione una estructura", "Lista Simple", "Lista Doble", "Arbol AVL", "Cola", "ArrayList", "Hash" }));
+        cbTipoEstructura.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione una estructura", "Lista Simple", "Lista Doble", "Arbol AVL", "Cola", "ArrayList", "Hash", "Pila", "Arreglo", "Arbol" }));
 
         cbCantidaD.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione una cantidad", "100", "1000", "10000", "100000", "500000", "1000000" }));
 
@@ -332,6 +334,46 @@ public class FrmEstructuras extends javax.swing.JFrame {
                                     break;
                                 case "busquedad secuencial":
                                     CtlPila.buscar(cantidadCanciones);
+                                    break;
+                            }
+                            break;
+                        case "Arreglo":
+                            switch (strOperacion) {
+                                case "Insert":
+                                    CtlArreglo.llenarArreglo(cantidadCanciones);
+                                    break;
+                                case "Update":
+                                    CtlArreglo.actualizarArreglo(cantidadCanciones);
+                                    break;
+                                case "Delete":
+                                    CtlArray.removerArray(cantidadCanciones);
+                                    break;
+                                case "busquedad binaria":
+                                    JOptionPane.showMessageDialog(this, "No esta permitda la busqueda secuencial\n"
+                                            + "en este tipo de estructura de datos");
+                                    break;
+                                case "busquedad secuencial":
+                                    CtlArreglo.buscar(cantidadCanciones);
+                                    break;
+                            }
+                            break;
+                        case "Arbol":
+                            switch (strOperacion) {
+                                case "Insert":
+                                    CtlArbolBinario.llenarArbol(cantidadCanciones);
+                                    break;
+                                case "Update":
+                                    CtlArbolBinario.set(cantidadCanciones);
+                                    break;
+                                case "Delete":
+                                    CtlArbolBinario.remove(cantidadCanciones);
+                                    break;
+                                case "busquedad binaria":
+                                    JOptionPane.showMessageDialog(this, "No esta permitda la busqueda secuencial\n"
+                                            + "en este tipo de estructura de datos");
+                                    break;
+                                case "busquedad secuencial":
+                                    CtlArbolBinario.buscar(cantidadCanciones);
                                     break;
                             }
                             break;

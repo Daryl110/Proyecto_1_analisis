@@ -12,57 +12,56 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Stack;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author nick_
  */
-public class CtlPila {
+public class CtlArreglo {
 
-    public static Stack<Cancion> stack = new Stack();
+    public static Cancion arreglo[] = new Cancion[0];
 
-    public static void llenarPila(int capacidad) {
-        stack = new Stack<>();
+    public static void llenarArreglo(int capacidad) {
+        arreglo = new Cancion[capacidad];
         ArrayList<Cancion> lstCanciones = new ArrayList<>(Main.dao.cargarConsulta("Select * from ANALISIS.CANCION WHERE ROWNUM <=" + capacidad + "", Cancion.class));
         long tiempo = System.nanoTime();
         for (int i = 0; i < lstCanciones.size(); i++) {
-            stack.push(lstCanciones.get(i));
+            arreglo[i] = lstCanciones.get(i);
         }
         tiempo = System.nanoTime() - tiempo;
-        Main.dao.guardar(new EstadisticaEstructura("insert", "Pila", new BigInteger(capacidad + ""), new BigInteger(tiempo + "")));
-        JOptionPane.showMessageDialog(null, "Se han añadido " + capacidad + " registros en la pila");
+        Main.dao.guardar(new EstadisticaEstructura("insert", "Arreglo", new BigInteger(capacidad + ""), new BigInteger(tiempo + "")));
+        JOptionPane.showMessageDialog(null, "Se han añadido " + capacidad + " registros en el arrelo");
 
     }
 
-    public static void removerPila(int capacida) {
-        if (!stack.isEmpty()) {
-            if (capacida > stack.size()) {
-                JOptionPane.showMessageDialog(null, "Se ha especificado un valor de elementos a eliminar mas grande que el tamaño de la Pila");
+    public static void removeArreglo(int capacida) {
+        if (!(arreglo.length == 0)) {
+            if (capacida > arreglo.length) {
+                JOptionPane.showMessageDialog(null, "Se ha especificado un valor de elementos a eliminar mas grande que el tamaño del arreglo");
                 return;
             }
 
             long tiempo = System.nanoTime();
             int num = capacida;
             while (num != 0) {
-                stack.pop();
+                arreglo[num] = null;
                 num--;
             }
             tiempo = System.nanoTime() - tiempo;
-            Main.dao.guardar(new EstadisticaEstructura("delete", "Pila", new BigInteger(capacida + ""), new BigInteger(tiempo + "")));
-            JOptionPane.showMessageDialog(null, "Se han eliminado " + capacida + " elementos de la pila");
+            Main.dao.guardar(new EstadisticaEstructura("delete", "Arreglo", new BigInteger(capacida + ""), new BigInteger(tiempo + "")));
+            JOptionPane.showMessageDialog(null, "Se han eliminado " + capacida + " elementos del hash map");
         } else {
-            JOptionPane.showMessageDialog(null, "La pila esta vacia");
+            JOptionPane.showMessageDialog(null, "El arreglo esta vacio");
         }
     }
 
-    public static void actualizarPila(int capacida) {
-        if (stack.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "La Pila esta vacia");
+    public static void actualizarArreglo(int capacida) {
+        if ((arreglo.length == 0)) {
+            JOptionPane.showMessageDialog(null, "El arreglo esta vacio");
         }
-        if (capacida > stack.size()) {
-            JOptionPane.showMessageDialog(null, "Se ha especificado un valor de elementos a actualizar mas grande que el tamaño de la lista");
+        if (capacida > arreglo.length) {
+            JOptionPane.showMessageDialog(null, "Se ha especificado un valor de elementos a editar mas grande que el tamaño del arreglo");
             return;
         }
         int id,
@@ -83,7 +82,7 @@ public class CtlPila {
         Cancion cancion = (Cancion) Main.dao.buscar(new BigDecimal(id + ""), Cancion.class);
         if (cancion == null) {
             JOptionPane.showMessageDialog(null, "El id ingresado no es valido");
-            actualizarPila(capacida);
+            actualizarArreglo(capacida);
             return;
         }
         try {
@@ -118,13 +117,11 @@ public class CtlPila {
             int cantidad = capacida;
             long time = System.nanoTime();
             while (cantidad != 0) {
-                stack.get(cantidad).setDuracion(cancion.getDuracion());
-                stack.get(cantidad).setNombre(cancion.getNombre());
-                stack.get(cantidad).setFechaLanzamiento(cancion.getFechaLanzamiento());
+                arreglo[cantidad] = cancion;
                 cantidad--;
             }
             time = System.nanoTime() - time;
-            Main.dao.guardar(new EstadisticaEstructura("update", "Pila", new BigInteger(capacida + ""), new BigInteger(time + "")));
+            Main.dao.guardar(new EstadisticaEstructura("update", "Arreglo", new BigInteger(capacida + ""), new BigInteger(time + "")));
             JOptionPane.showMessageDialog(null, "Se han modificado " + capacida + " con la estructura de la cancion:\n"
                     + "Nombre: " + nombre + "\n"
                     + "Duracion: " + duracion + "\n"
@@ -135,8 +132,8 @@ public class CtlPila {
     }
 
     public static void buscar(int limit) {
-        if (stack.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "la pila esta vacia");
+        if (arreglo.length == 0) {
+            JOptionPane.showMessageDialog(null, "el arreglo esta vacio");
             return;
         }
         int idCancion;
@@ -151,17 +148,22 @@ public class CtlPila {
             return;
         }
         long tiempo = System.nanoTime();
-        Cancion aux = stack.get(idCancion);
-        if (aux == null) {
-            Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "Pila", new BigInteger(limit + ""), new BigInteger(tiempo + "")));
-            JOptionPane.showMessageDialog(null, "No se ha encontrado");
-        } else {
-            tiempo = System.nanoTime() - tiempo;
+        for (int i = 0; i < arreglo.length; i++) {
+            Cancion can = arreglo[i];
+            if (Integer.parseInt(can.getId() + "") == idCancion) {
+                JOptionPane.showMessageDialog(null, "Se ha encontrado la cancion\n"
+                        + "Nombre: " + can.getNombre() + "\n"
+                        + "Duracion: " + can.getDuracion() + "\n"
+                        + "Fecha Lanzamiento: " + can.getFechaLanzamiento());
+                tiempo = System.nanoTime() - tiempo;
+                Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "Arreglo", new BigInteger(limit + ""), new BigInteger(tiempo + "")));
+                return;
+            }
         }
-        Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "Pila", new BigInteger(limit + ""), new BigInteger(tiempo + "")));
-        JOptionPane.showMessageDialog(null, "Se ha encontrado la cancion\n"
-                + "Nombre: " + aux.getNombre() + "\n"
-                + "Duracion: " + aux.getDuracion() + "\n"
-                + "Fecha Lanzamiento: " + aux.getFechaLanzamiento());
+        JOptionPane.showMessageDialog(null, "No se ha encontrado");
+        tiempo = System.nanoTime() - tiempo;
+        Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "Arreglo", new BigInteger(limit + ""), new BigInteger(tiempo + "")));
+
     }
+
 }

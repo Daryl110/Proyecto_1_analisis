@@ -139,7 +139,7 @@ public class CtlHash {
         }
     }
 
-        public static void buscar(int limit) {
+    public static void buscar(int limit) {
         if (map.isEmpty()) {
             JOptionPane.showMessageDialog(null, "el hash esta vacio");
             return;
@@ -157,12 +157,18 @@ public class CtlHash {
         }
         long tiempo = System.nanoTime();
         Cancion aux = map.get(idCancion);
-        tiempo = System.nanoTime() - tiempo;
-        Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "Hash", new BigInteger(limit + ""), new BigInteger(tiempo + "")));
-        JOptionPane.showMessageDialog(null, "Se ha encontrado la cancion\n"
-                + "Nombre: "+aux.getNombre()+"\n"
-                            + "Duracion: "+aux.getDuracion()+"\n"
-                                    + "Fecha Lanzamiento: "+aux.getFechaLanzamiento());
+        if (aux == null) {
+            tiempo = System.nanoTime() - tiempo;
+            Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "Hash", new BigInteger(limit + ""), new BigInteger(tiempo + "")));
+            JOptionPane.showMessageDialog(null, "No se ha encontrado");
+        } else {
+            tiempo = System.nanoTime() - tiempo;
+            Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "Hash", new BigInteger(limit + ""), new BigInteger(tiempo + "")));
+            JOptionPane.showMessageDialog(null, "Se ha encontrado la cancion\n"
+                    + "Nombre: " + aux.getNombre() + "\n"
+                    + "Duracion: " + aux.getDuracion() + "\n"
+                    + "Fecha Lanzamiento: " + aux.getFechaLanzamiento());
+        }
     }
 
     public void mostrarHash() {
