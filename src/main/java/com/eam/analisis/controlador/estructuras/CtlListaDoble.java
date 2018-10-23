@@ -23,16 +23,27 @@ public class CtlListaDoble {
     public static LinkedList<Nodo<Cancion>> canciones = new LinkedList<>();
 
     public static void add(int limit) {
-        ArrayList<Cancion> array = new ArrayList(Main.dao.cargarConsulta("SELECT * FROM CANCION WHERE ROWNUM <= " + limit, Cancion.class));
+        ArrayList<Cancion> array = consultarDatos(limit);
         long time = System.nanoTime();
         Nodo<Cancion> aux = new Nodo<>(array.get(0));
+        canciones.add(aux);
         for (int i = 1; i < array.size(); i++) {
-            canciones.add(aux);
             aux.setSiguiente(new Nodo<>(array.get(i)));
+            aux.getSiguiente().setAnterior(aux);
             aux = aux.getSiguiente();
+            canciones.add(aux);
         }
         time = System.nanoTime() - time;
         Main.dao.guardar(new EstadisticaEstructura("insert", "ListaDoble", new BigInteger(limit + ""), new BigInteger(time + "")));
+        JOptionPane.showMessageDialog(null, "Se han añadido "+limit+" registros en la lista doble");
+    }
+    
+    public static ArrayList<Cancion> consultarDatos(int limit){
+        long time = System.nanoTime();
+        ArrayList<Cancion> array = new ArrayList(Main.dao.cargarConsulta("SELECT * FROM CANCION WHERE ROWNUM <= " + limit, Cancion.class));
+        time = System.nanoTime() - time;
+        Main.dao.guardar(new EstadisticaEstructura("select", "ListaDoble", new BigInteger(limit + ""), new BigInteger(time + "")));
+        return array;
     }
 
     public static void mostrar() {
@@ -51,12 +62,13 @@ public class CtlListaDoble {
             }
             int numCanciones = limit;
             long time = System.nanoTime();
-            while (limit > 0) {
+            while (limit != 0) {
                 canciones.remove();
                 limit--;
             }
             time = System.nanoTime() - time;
             Main.dao.guardar(new EstadisticaEstructura("delete", "ListaDoble", new BigInteger(numCanciones + ""), new BigInteger(time + "")));
+            JOptionPane.showMessageDialog(null, "Se han eliminado "+numCanciones+" elementos de la lista doble");
         } else {
             JOptionPane.showMessageDialog(null, "La Lista esta vacia");
         }
@@ -131,6 +143,10 @@ public class CtlListaDoble {
             }
             time = System.nanoTime() - time;
             Main.dao.guardar(new EstadisticaEstructura("update", "ListaDoble", new BigInteger(cantidad + ""), new BigInteger(time + "")));
+            JOptionPane.showMessageDialog(null, "Se han modificado "+cantidad+" elementos con la estructura de la cancion:\n"
+                    + "Nombre: "+nombre+"\n"
+                            + "Duracion: "+duracion+"\n"
+                                    + "Fecha Lanzamiento: "+fechaLanzamiento);
         } else {
             JOptionPane.showMessageDialog(null, "No se ha cambiado ningun campo");
         }
@@ -162,10 +178,13 @@ public class CtlListaDoble {
         }
         time = System.nanoTime() - time;
         Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "ListaDoble", new BigInteger(limit + ""), new BigInteger(time + "")));
+        JOptionPane.showMessageDialog(null, "Se ha encontrado la cancion\n"
+                + "Nombre: "+aux.getElemento().getNombre()+"\n"
+                            + "Duracion: "+aux.getElemento().getDuracion()+"\n"
+                                    + "Fecha Lanzamiento: "+aux.getElemento().getFechaLanzamiento());
     }
-
-    //Implementando...
-    public static void buscarBinario() {
+    
+    public static void buscarBinario(int limit) {
         if (canciones.isEmpty()) {
             JOptionPane.showMessageDialog(null, "La Lista esta vacia");
             return;
@@ -178,20 +197,22 @@ public class CtlListaDoble {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se ha ingresado un id valido");
-            buscarBinario();
+            buscarBinario(limit);
             return;
         }
         long time = System.nanoTime();
-        Nodo<Cancion> aux = canciones.getFirst();
-        aux = buscarBinaria(aux, new BigDecimal(idCancion + ""));
+        int mitad = (canciones.size()-1)/2;
+        Nodo<Cancion> aux = canciones.get(mitad);
+        aux = buscarBinaria(aux, new BigDecimal(idCancion + ""), mitad);
         time = System.nanoTime() - time;
-        System.out.println("Nombre encontrado: " + aux.getElemento().getNombre());
-        System.out.println("ID: " + aux.getElemento().getId());
-        System.out.println("Time: " + time);
-//        Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "ListaDoble", new BigInteger(1 + ""), new BigInteger(time + "")));
+        Main.dao.guardar(new EstadisticaEstructura("Busqueda Binaria", "ListaDoble", new BigInteger(limit + ""), new BigInteger(time + "")));
+        JOptionPane.showMessageDialog(null, "Se ha encontrado la cancion\n"
+                + "Nombre: "+aux.getElemento().getNombre()+"\n"
+                            + "Duracion: "+aux.getElemento().getDuracion()+"\n"
+                                    + "Fecha Lanzamiento: "+aux.getElemento().getFechaLanzamiento());
     }
 
-    public static Nodo<Cancion> buscarBinaria(Nodo<Cancion> aux, BigDecimal id) {
+    private static Nodo<Cancion> buscarBinaria(Nodo<Cancion> aux, BigDecimal id, int pos) {
         if (aux != null) {
             if (id.compareTo(aux.getElemento().getId()) == 0) {
                 return aux;
@@ -199,6 +220,20 @@ public class CtlListaDoble {
         } else {
             return null;
         }
-        return buscarBinaria(aux.getSiguiente(), id);
+        Nodo<Cancion> aux1;
+        if (aux.getSiguiente() != null && pos >= ((canciones.size() - 1) / 2) && pos <= (canciones.size() - 1)) {
+            aux1 = buscarBinaria(aux.getSiguiente(), id, pos + 1);
+            if (aux1 != null) {
+                return aux1;
+            }
+        }
+
+        if (aux.getAnterior() != null && pos <= ((canciones.size() - 1) / 2) && pos >= 0) {
+            aux1 = buscarBinaria(aux.getAnterior(), id, pos - 1);
+            if (aux1 != null) {
+                return aux1;
+            }
+        }
+        return null;
     }
 }

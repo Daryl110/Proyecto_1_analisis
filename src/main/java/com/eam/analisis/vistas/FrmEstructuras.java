@@ -228,8 +228,7 @@ public class FrmEstructuras extends javax.swing.JFrame {
                                     CtlListaDoble.remove(cantidadCanciones);
                                     break;
                                 case "busquedad binaria":
-                                    JOptionPane.showMessageDialog(this, "No esta permitda la busqueda binaria\n"
-                                            + "en este tipo de estructura de datos");
+                                    CtlListaDoble.buscarBinario(cantidadCanciones);
                                     break;
                                 case "busquedad secuencial":
                                     CtlListaDoble.buscarSecuencial(cantidadCanciones);

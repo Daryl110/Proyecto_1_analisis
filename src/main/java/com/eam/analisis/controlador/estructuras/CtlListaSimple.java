@@ -148,7 +148,7 @@ public class CtlListaSimple {
             }
             time = System.nanoTime() - time;
             Main.dao.guardar(new EstadisticaEstructura("update", "ListaSimple", new BigInteger(cantidad + ""), new BigInteger(time + "")));
-            JOptionPane.showMessageDialog(null, "Se han modificado "+cantidad+" con la estructura de la cancion:\n"
+            JOptionPane.showMessageDialog(null, "Se han modificado "+cantidad+" elementos con la estructura de la cancion:\n"
                     + "Nombre: "+nombre+"\n"
                             + "Duracion: "+duracion+"\n"
                                     + "Fecha Lanzamiento: "+fechaLanzamiento);
