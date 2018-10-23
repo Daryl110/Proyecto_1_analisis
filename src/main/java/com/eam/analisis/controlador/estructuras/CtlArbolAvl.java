@@ -22,19 +22,28 @@ public class CtlArbolAvl {
     public static TreeMap<BigDecimal, Cancion> canciones = new TreeMap<>();
     
     public static void add(int limit){
-        ArrayList<Cancion> array = new ArrayList(Main.dao.cargarConsulta("SELECT * FROM CANCION WHERE ROWNUM <= " + limit, Cancion.class));
+        ArrayList<Cancion> array = consultarDatos(limit);
         long time = System.nanoTime();
         array.forEach((cancion) -> {
             canciones.put(cancion.getId(), cancion);
         });
         time = System.nanoTime() - time;
         Main.dao.guardar(new EstadisticaEstructura("insert", "ArbolAVL", new BigInteger(limit + ""), new BigInteger(time + "")));
+        JOptionPane.showMessageDialog(null, "Se han añadido "+limit+" registros en el arbol");
+    }
+    
+    public static ArrayList<Cancion> consultarDatos(int limit){
+        long time = System.nanoTime();
+        ArrayList<Cancion> array = new ArrayList(Main.dao.cargarConsulta("SELECT * FROM CANCION WHERE ROWNUM <= " + limit, Cancion.class));
+        time = System.nanoTime() - time;
+        Main.dao.guardar(new EstadisticaEstructura("select", "ArbolAVL", new BigInteger(limit + ""), new BigInteger(time + "")));
+        return array;
     }
     
     public static void remove(int limit) {
         if (!canciones.isEmpty()) {
             if (limit > canciones.size()) {
-                JOptionPane.showMessageDialog(null, "Se ha especificado un valor de elementos a eliminar mas grande que el tamaño de la lista");
+                JOptionPane.showMessageDialog(null, "Se ha especificado un valor de elementos a eliminar mas grande que el tamaño del arbol");
                 return;
             }
             int numCanciones = limit;
@@ -45,17 +54,18 @@ public class CtlArbolAvl {
             }
             time = System.nanoTime() - time;
             Main.dao.guardar(new EstadisticaEstructura("delete", "ArbolAVL", new BigInteger(numCanciones + ""), new BigInteger(time + "")));
+            JOptionPane.showMessageDialog(null, "Se han eliminado "+numCanciones+" elementos en el arbol");
         } else {
-            JOptionPane.showMessageDialog(null, "La Lista esta vacia");
+            JOptionPane.showMessageDialog(null, "el arbol esta vacia");
         }
     }
     
     public static void set(int limit) {
         if (canciones.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "La Lista esta vacia");
+            JOptionPane.showMessageDialog(null, "el arbol esta vacia");
         }
         if (limit > canciones.size()) {
-            JOptionPane.showMessageDialog(null, "Se ha especificado un valor de elementos a eliminar mas grande que el tamaño de la lista");
+            JOptionPane.showMessageDialog(null, "Se ha especificado un valor de elementos a eliminar mas grande que el tamaño de el arbol");
             return;
         }
         int id,
@@ -119,6 +129,10 @@ public class CtlArbolAvl {
             }
             time = System.nanoTime() - time;
             Main.dao.guardar(new EstadisticaEstructura("update", "ArbolAVL", new BigInteger(cantidad + ""), new BigInteger(time + "")));
+            JOptionPane.showMessageDialog(null, "Se han modificado "+cantidad+" elementos con la estructura de la cancion:\n"
+                    + "Nombre: "+nombre+"\n"
+                            + "Duracion: "+duracion+"\n"
+                                    + "Fecha Lanzamiento: "+fechaLanzamiento);
         } else {
             JOptionPane.showMessageDialog(null, "No se ha cambiado ningun campo");
         }
@@ -126,7 +140,7 @@ public class CtlArbolAvl {
     
     public static void buscar(int limit){
         if (canciones.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "La Lista esta vacia");
+            JOptionPane.showMessageDialog(null, "el arbol esta vacia");
             return;
         }
         int idCancion;
@@ -141,8 +155,12 @@ public class CtlArbolAvl {
             return;
         }
         long time = System.nanoTime();
-        canciones.get(new BigDecimal(idCancion+""));
+        Cancion aux = canciones.get(new BigDecimal(idCancion+""));
         time = System.nanoTime() - time;
         Main.dao.guardar(new EstadisticaEstructura("Busqueda Binaria", "ArbolAVL", new BigInteger(limit + ""), new BigInteger(time + "")));
+        JOptionPane.showMessageDialog(null, "Se ha encontrado la cancion\n"
+                + "Nombre: "+aux.getNombre()+"\n"
+                            + "Duracion: "+aux.getDuracion()+"\n"
+                                    + "Fecha Lanzamiento: "+aux.getFechaLanzamiento());
     }
 }
