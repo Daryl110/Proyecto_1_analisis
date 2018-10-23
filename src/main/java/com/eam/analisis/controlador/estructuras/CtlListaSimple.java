@@ -128,6 +128,8 @@ public class CtlListaSimple {
                 anio = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el año de lanzamiento"));
                 fechaLanzamiento = new Date(dia + "/" + mes + "/" + anio);
                 camposCambiados++;
+            }else{
+                throw new NullPointerException();
             }
         } catch (Exception e) {
             fechaLanzamiento = cancion.getFechaLanzamiento();
@@ -146,6 +148,10 @@ public class CtlListaSimple {
             }
             time = System.nanoTime() - time;
             Main.dao.guardar(new EstadisticaEstructura("update", "ListaSimple", new BigInteger(cantidad + ""), new BigInteger(time + "")));
+            JOptionPane.showMessageDialog(null, "Se han modificado "+cantidad+" con la estructura de la cancion:\n"
+                    + "Nombre: "+nombre+"\n"
+                            + "Duracion: "+duracion+"\n"
+                                    + "Fecha Lanzamiento: "+fechaLanzamiento);
         } else {
             JOptionPane.showMessageDialog(null, "No se ha cambiado ningun campo");
         }
@@ -177,6 +183,10 @@ public class CtlListaSimple {
         }
         time = System.nanoTime() - time;
         Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "ListaSimple", new BigInteger(limit + ""), new BigInteger(time + "")));
+        JOptionPane.showMessageDialog(null, "Se ha encontrado la cancion\n"
+                + "Nombre: "+aux.getElemento().getNombre()+"\n"
+                            + "Duracion: "+aux.getElemento().getDuracion()+"\n"
+                                    + "Fecha Lanzamiento: "+aux.getElemento().getFechaLanzamiento());
     }
 
 }
