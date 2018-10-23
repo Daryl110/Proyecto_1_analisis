@@ -569,7 +569,11 @@ public class FrmOrdenamiento extends javax.swing.JFrame {
     }//GEN-LAST:event_cbFiltroCantidadItemStateChanged
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        CtlReportes.graficarOrdenamientos();
+        try {
+            CtlReportes.graficarOrdenamientos(Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de canciones por las que desea filtrar")));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se ha ingresado bien la cantidad");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     public ArrayList<Cancion> trearArreglo(int valor) {

@@ -4,6 +4,7 @@
 package com.eam.analisis.controlador.metodosOrdenacion;
 
 import com.eam.analisis.modelo.Cancion;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 /**
@@ -31,7 +32,7 @@ public class MetodosOrdenacion {
             int n = heapsize; // el índice del int insertado
             while (n > 0) { // until we reach the root of the heap
                 int p = (n - 1) / 2; // Hasta que lleguemos a la raíz del montón.
-                if (Integer.parseInt(array.get(n).getDuracion() + "") > Integer.parseInt(array.get(p).getDuracion() + "")) { // el índice del int insertado
+                if (array.get(n).getDuracion().compareTo(array.get(p).getDuracion()) > 0) { // el índice del int insertado
                     cambiarPosicion(array, n, p); // el niño es más grande que el padre
                     n = p; // comprobar padre
                 } else // el padre es más grande que el niño
@@ -53,14 +54,14 @@ public class MetodosOrdenacion {
                 }
                 int right = left + 1;
                 if (right >= heapsize) { // El nodo tiene un hijo izquierdo, pero ningún hijo derecho
-                    if (Integer.parseInt(array.get(left).getDuracion() + "") > Integer.parseInt(array.get(n).getDuracion() + "")) // si el hijo izquierdo es mayor que el nodo
+                    if (array.get(left).getDuracion().compareTo(array.get(n).getDuracion()) > 0) // si el hijo izquierdo es mayor que el nodo
                     {
                         cambiarPosicion(array, left, n); // intercambiar hijo izquierdo con nodo
                     }
                     break; // el montón es heapified
                 }
-                if (Integer.parseInt(array.get(left).getDuracion() + "") > Integer.parseInt(array.get(n).getDuracion() + "")) { // (left > n)
-                    if (Integer.parseInt(array.get(left).getDuracion() + "") > Integer.parseInt(array.get(right).getDuracion() + "")) { // (left > right) & (left > n)
+                if (array.get(left).getDuracion().compareTo(array.get(n).getDuracion()) > 0) { // (left > n)
+                    if (array.get(left).getDuracion().compareTo(array.get(right).getDuracion()) > 0) { // (left > right) & (left > n)
                         cambiarPosicion(array, left, n);
                         n = left; // continuar la recursión en el niño izquierdo
                     } else { // (right > left > n)
@@ -68,7 +69,7 @@ public class MetodosOrdenacion {
                         n = right; // continuar la recursión en el niño derecho
                     }
                 } else { // (n > left)
-                    if (Integer.parseInt(array.get(right).getDuracion() + "") > Integer.parseInt(array.get(n).getDuracion() + "")) { // (right > n > left)
+                    if (array.get(right).getDuracion().compareTo(array.get(n).getDuracion()) > 0) { // (right > n > left)
                         cambiarPosicion(array, right, n);
                         n = right;// continuar la recursión en el niño derecho
                     } else { // (n > left) & (n > right)
@@ -92,7 +93,7 @@ public class MetodosOrdenacion {
         do {
             permutacion = false;// valida que el ciclo no sea infinito
             for (int i = 0; i < arreglo.size() - iteracion; i++) {
-                if (Integer.parseInt(arreglo.get(i).getDuracion() + "") > Integer.parseInt(arreglo.get(i + 1).getDuracion() + "")) {
+                if (arreglo.get(i).getDuracion().compareTo(arreglo.get(i + 1).getDuracion()) > 0) {
                     permutacion = true;
                     cambiarPosicion(arreglo, i, i + 1);
                 }
@@ -110,7 +111,7 @@ public class MetodosOrdenacion {
             permutacion = false;
             while (((direccion == 1) && (actual < fin)) || ((direccion == -1) && (actual > comienzo))) {
                 actual += direccion;
-                if (Integer.parseInt(arreglo.get(actual).getDuracion() + "") < Integer.parseInt(arreglo.get(actual - 1).getDuracion() + "")) {
+                if (arreglo.get(actual).getDuracion().compareTo(arreglo.get(actual - 1).getDuracion()) < 0) {
                     cambiarPosicion(arreglo, actual, actual - 1);
                     permutacion = true;
                 }
@@ -134,7 +135,7 @@ public class MetodosOrdenacion {
 
     private static void burbuja(ArrayList<Cancion> arreglo, int p) {
         int j = p;
-        while ((j > 0) && (Integer.parseInt(arreglo.get(j).getDuracion() + "") < Integer.parseInt(arreglo.get(j - 1).getDuracion() + ""))) {
+        while ((j > 0) && (arreglo.get(j).getDuracion().compareTo(arreglo.get(j - 1).getDuracion()) < 0)) {
             cambiarPosicion(arreglo, j - 1, j);
             j--;
         }
@@ -169,7 +170,7 @@ public class MetodosOrdenacion {
         k = izq;
         while (i <= m && j <= der) //copia el siguiente elemento más grande
         {
-            if (Integer.parseInt(B[i].getDuracion() + "") <= Integer.parseInt(B[j].getDuracion() + "")) {
+            if (B[i].getDuracion().compareTo(B[j].getDuracion()) <= 0) {
                 A.set(k++, B[i++]);
             } else {
                 A.set(k++, B[j++]);
@@ -191,7 +192,7 @@ public class MetodosOrdenacion {
                 while (j >= 0) {//Mientras el salto no sea 0, esto significa que tomara los valores desde atras a adelante,
                     //Llegando hasta el valor 0
                     int k = j + salto;//este valor tomara valores desde 0 hasta el fin del arreglo
-                    if (Integer.parseInt(arreglo.get(j).getDuracion() + "") <= Integer.parseInt(arreglo.get(k).getDuracion() + "")) {
+                    if (arreglo.get(j).getDuracion().compareTo(arreglo.get(k).getDuracion()) <= 0) {
                         // si las posiciones son menores o iguales, se rompera el ciclo
                         break;
                     } else {//De lo contrario se cambiaran las posiciones
@@ -216,10 +217,10 @@ public class MetodosOrdenacion {
         int i = posIzquierda, d = posDerecha;//Guardar variables iniciales, ya que cambiaran
         int pivote = posIzquierda;//Pivote siempre sera el numero en la pocision izquierda
         while (posIzquierda != posDerecha) {
-            while (Integer.parseInt(arreglo.get(posDerecha).getDuracion() + "") >= Integer.parseInt(arreglo.get(pivote).getDuracion() + "") && posIzquierda < posDerecha) {
+            while (arreglo.get(posDerecha).getDuracion().compareTo(arreglo.get(pivote).getDuracion()) >= 0 && posIzquierda < posDerecha) {
                 posDerecha--;// cambiara de posicion si todo esta bien
             }            // por el lado derecho
-            while (Integer.parseInt(arreglo.get(posIzquierda).getDuracion() + "") < Integer.parseInt(arreglo.get(pivote).getDuracion() + "") && posIzquierda < posDerecha) {
+            while (arreglo.get(posIzquierda).getDuracion().compareTo(arreglo.get(pivote).getDuracion()) < 0 && posIzquierda < posDerecha) {
                 posIzquierda++;// cambiara de posicion si todo esta bien
             }            // por el lado izquierdo
             if (posDerecha != posIzquierda) {//Cambiara la posicion si hay alguna inconsistencia de mayor o menor
@@ -239,7 +240,7 @@ public class MetodosOrdenacion {
         for (x = 1; x < array.size(); x++) { // desde el segundo elemento hasta el final
             aux = array.get(x); // guardamos el elemento 
             y = x - 1; // empezamos a comprobar con el anterior
-            while ((y >= 0) && (Integer.parseInt(aux.getDuracion() + "") < Integer.parseInt(array.get(y).getDuracion() + ""))) { // mientras queden posiciones y el valor de aux sea menor que los de la izquierda
+            while ((y >= 0) && (aux.getDuracion().compareTo(array.get(y).getDuracion()) < 0)) { // mientras queden posiciones y el valor de aux sea menor que los de la izquierda
                 array.set(y+1, array.get(y));
                 y--;                   // se desplaza a la derecha
             }
@@ -254,7 +255,7 @@ public class MetodosOrdenacion {
             menor = array.get(i);//  los elementos que quedan por ordenar
             poss = i; // guardamos su posición
             for (j = i + 1; j < array.size(); j++) { // buscamos en el array algun elemento menor al actual
-                if (Integer.parseInt(array.get(j).getDuracion() + "") < Integer.parseInt(menor.getDuracion() + "")) {
+                if (array.get(j).getDuracion().compareTo(menor.getDuracion()) < 0) {
                     menor = array.get(j);
                     poss = j;
                 }
@@ -277,7 +278,7 @@ public class MetodosOrdenacion {
                 gap = 1;
             }
             for (actual = 0; actual < array.size() - gap; actual++) {
-                if (Integer.parseInt(array.get(actual).getDuracion() + "") > Integer.parseInt(array.get(actual + gap).getDuracion() + "")) {
+                if (array.get(actual).getDuracion().compareTo(array.get(actual + gap).getDuracion()) > 0) {
                     permutación = true;
                     // Intercambiamos los dos elementos
                     cambiarPosicion(array, actual, actual + gap);

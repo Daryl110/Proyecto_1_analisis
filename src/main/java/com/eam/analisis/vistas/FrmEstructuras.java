@@ -401,7 +401,11 @@ public class FrmEstructuras extends javax.swing.JFrame {
     }//GEN-LAST:event_cbFiltroCantidadItemStateChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        CtlReportes.graficarEstructuras();
+        try {
+            CtlReportes.graficarEstructuras(Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de canciones por las que desea filtrar")));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se ha ingresado bien la cantidad");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
