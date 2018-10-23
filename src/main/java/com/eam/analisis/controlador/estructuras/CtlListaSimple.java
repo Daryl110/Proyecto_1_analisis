@@ -23,13 +23,26 @@ public class CtlListaSimple {
     public static LinkedList<Nodo<Cancion>> canciones = new LinkedList<>();
 
     public static void add(int limit) {
-        ArrayList<Cancion> array = new ArrayList(Main.dao.cargarConsulta("SELECT * FROM CANCION WHERE ROWNUM <= " + limit, Cancion.class));
+        ArrayList<Cancion> array = consultarDatos(limit);
         long time = System.nanoTime();
-        array.forEach((cancion) -> {
-            canciones.add(new Nodo<>(cancion));
-        });
+        Nodo<Cancion> aux = new Nodo<>(array.get(0));
+        canciones.add(aux);
+        for (int i = 1; i < array.size(); i++) {
+            aux.setSiguiente(new Nodo<>(array.get(i)));
+            aux = aux.getSiguiente();
+            canciones.add(aux);
+        }
         time = System.nanoTime() - time;
         Main.dao.guardar(new EstadisticaEstructura("insert", "ListaSimple", new BigInteger(limit + ""), new BigInteger(time + "")));
+        JOptionPane.showMessageDialog(null, "Se han añadido "+limit+" registros en la lista simple");
+    }
+    
+    public static ArrayList<Cancion> consultarDatos(int limit){
+        long time = System.nanoTime();
+        ArrayList<Cancion> array = new ArrayList(Main.dao.cargarConsulta("SELECT * FROM CANCION WHERE ROWNUM <= " + limit, Cancion.class));
+        time = System.nanoTime() - time;
+        Main.dao.guardar(new EstadisticaEstructura("select", "ListaSimple", new BigInteger(limit + ""), new BigInteger(time + "")));
+        return array;
     }
 
     public static void mostrar(int limit) {
@@ -59,6 +72,7 @@ public class CtlListaSimple {
             }
             time = System.nanoTime() - time;
             Main.dao.guardar(new EstadisticaEstructura("delete", "ListaSimple", new BigInteger(numCanciones + ""), new BigInteger(time + "")));
+            JOptionPane.showMessageDialog(null, "Se han eliminado "+numCanciones+" elementos de la lista simple");
         } else {
             JOptionPane.showMessageDialog(null, "La Lista esta vacia");
         }
@@ -114,6 +128,8 @@ public class CtlListaSimple {
                 anio = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el año de lanzamiento"));
                 fechaLanzamiento = new Date(dia + "/" + mes + "/" + anio);
                 camposCambiados++;
+            }else{
+                throw new NullPointerException();
             }
         } catch (Exception e) {
             fechaLanzamiento = cancion.getFechaLanzamiento();
@@ -132,12 +148,16 @@ public class CtlListaSimple {
             }
             time = System.nanoTime() - time;
             Main.dao.guardar(new EstadisticaEstructura("update", "ListaSimple", new BigInteger(cantidad + ""), new BigInteger(time + "")));
+            JOptionPane.showMessageDialog(null, "Se han modificado "+cantidad+" con la estructura de la cancion:\n"
+                    + "Nombre: "+nombre+"\n"
+                            + "Duracion: "+duracion+"\n"
+                                    + "Fecha Lanzamiento: "+fechaLanzamiento);
         } else {
             JOptionPane.showMessageDialog(null, "No se ha cambiado ningun campo");
         }
     }
 
-    public static void buscar() {
+    public static void buscar(int limit) {
         if (canciones.isEmpty()) {
             JOptionPane.showMessageDialog(null, "La Lista esta vacia");
             return;
@@ -150,7 +170,7 @@ public class CtlListaSimple {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se ha ingresado un id valido");
-            buscar();
+            buscar(limit);
             return;
         }
         long time = System.nanoTime();
@@ -162,7 +182,11 @@ public class CtlListaSimple {
             aux = aux.getSiguiente();
         }
         time = System.nanoTime() - time;
-        Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "ListaSimple", new BigInteger(1 + ""), new BigInteger(time + "")));
+        Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "ListaSimple", new BigInteger(limit + ""), new BigInteger(time + "")));
+        JOptionPane.showMessageDialog(null, "Se ha encontrado la cancion\n"
+                + "Nombre: "+aux.getElemento().getNombre()+"\n"
+                            + "Duracion: "+aux.getElemento().getDuracion()+"\n"
+                                    + "Fecha Lanzamiento: "+aux.getElemento().getFechaLanzamiento());
     }
 
 }
