@@ -10,66 +10,57 @@ import com.eam.analisis.modelo.Cancion;
 import com.eam.analisis.modelo.EstadisticaEstructura;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author nick_
  */
-public class CtlHash {
+public class CtlArray {
 
-    public static HashMap<Integer, Cancion> map = new HashMap<>();
+    public static ArrayList<Cancion> listaCancion = new ArrayList<>();
 
-    public static void llenarHash(int capacidad) {
-        map = new HashMap();
+    public static void llenarArray(int capacidad) {
+        listaCancion = new ArrayList<>();
         ArrayList<Cancion> lstCanciones = new ArrayList<>(Main.dao.cargarConsulta("Select * from ANALISIS.CANCION WHERE ROWNUM <=" + capacidad + "", Cancion.class));
         long tiempo = System.nanoTime();
-        for (Cancion cancion : lstCanciones) {
-            map.put(Integer.parseInt(cancion.getId() + ""), cancion);
+        for (int i = 0; i < lstCanciones.size(); i++) {
+            listaCancion.add(lstCanciones.get(i));
         }
         tiempo = System.nanoTime() - tiempo;
-        Main.dao.guardar(new EstadisticaEstructura("insert", "Hash", new BigInteger(capacidad + ""), new BigInteger(tiempo + "")));
-        JOptionPane.showMessageDialog(null, "Se han añadido " + capacidad + " registros en la lista simple");
+        Main.dao.guardar(new EstadisticaEstructura("insert", "ArrayList", new BigInteger(capacidad + ""), new BigInteger(tiempo + "")));
+        JOptionPane.showMessageDialog(null, "Se han añadido " + capacidad + " registros en el ArrayList");
 
     }
 
-//    public void añadirHash(int capacida, Cancion cancion) {
-//        llenarHash(capacida);
-//        long tiempoInicio = System.nanoTime();
-//        map.put(map.size() + 1, cancion);
-//        tiempo = System.nanoTime() - tiempoInicio;
-//    }
-    public static void removerHash(int capacida) {
-        if (!map.isEmpty()) {
-            if (capacida > map.size()) {
-                JOptionPane.showMessageDialog(null, "Se ha especificado un valor de elementos a eliminar mas grande que el tamaño de la lista");
+    public static void removerArray(int capacida) {
+        if (!listaCancion.isEmpty()) {
+            if (capacida > listaCancion.size()) {
+                JOptionPane.showMessageDialog(null, "Se ha especificado un valor de elementos a eliminar mas grande que el tamaño del ArrayList");
                 return;
             }
-
             long tiempo = System.nanoTime();
             int num = capacida;
             while (num != 0) {
-                map.remove(num);
+                listaCancion.remove(num);
                 num--;
             }
             tiempo = System.nanoTime() - tiempo;
-            Main.dao.guardar(new EstadisticaEstructura("delete", "Hash", new BigInteger(capacida + ""), new BigInteger(tiempo + "")));
-            JOptionPane.showMessageDialog(null, "Se han eliminado " + capacida + " elementos del hash map");
+            Main.dao.guardar(new EstadisticaEstructura("delete", "ArrayList", new BigInteger(capacida + ""), new BigInteger(tiempo + "")));
+            JOptionPane.showMessageDialog(null, "Se han eliminado " + capacida + " elementos del ArrayList");
         } else {
-            JOptionPane.showMessageDialog(null, "La Lista esta vacia");
+            JOptionPane.showMessageDialog(null, "El ArrayList esta vacia");
         }
     }
 
-    public static void actualizarHash(int capacida) {
-        if (map.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "El hash esta vacio");
+    public static void actualizarArray(int capacida) {
+        if (listaCancion.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El arraylist esta vacia");
         }
-        if (capacida > map.size()) {
-            JOptionPane.showMessageDialog(null, "Se ha especificado un valor de elementos a editar mas grande que el tamaño del hash");
+        if (capacida > listaCancion.size()) {
+            JOptionPane.showMessageDialog(null, "Se ha especificado un valor de elementos a actualizar mas grande que el tamaño de la lista");
             return;
         }
         int id,
@@ -90,7 +81,7 @@ public class CtlHash {
         Cancion cancion = (Cancion) Main.dao.buscar(new BigDecimal(id + ""), Cancion.class);
         if (cancion == null) {
             JOptionPane.showMessageDialog(null, "El id ingresado no es valido");
-            actualizarHash(capacida);
+            actualizarArray(capacida);
             return;
         }
         try {
@@ -125,11 +116,13 @@ public class CtlHash {
             int cantidad = capacida;
             long time = System.nanoTime();
             while (cantidad != 0) {
-                map.replace(cantidad, cancion);
+                listaCancion.get(cantidad).setDuracion(cancion.getDuracion());
+                listaCancion.get(cantidad).setNombre(cancion.getNombre());
+                listaCancion.get(cantidad).setFechaLanzamiento(cancion.getFechaLanzamiento());
                 cantidad--;
             }
             time = System.nanoTime() - time;
-            Main.dao.guardar(new EstadisticaEstructura("update", "Hash", new BigInteger(capacida + ""), new BigInteger(time + "")));
+            Main.dao.guardar(new EstadisticaEstructura("update", "ArrayList", new BigInteger(capacida + ""), new BigInteger(time + "")));
             JOptionPane.showMessageDialog(null, "Se han modificado " + capacida + " con la estructura de la cancion:\n"
                     + "Nombre: " + nombre + "\n"
                     + "Duracion: " + duracion + "\n"
@@ -138,10 +131,9 @@ public class CtlHash {
             JOptionPane.showMessageDialog(null, "No se ha cambiado ningun campo");
         }
     }
-
         public static void buscar(int limit) {
-        if (map.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "el hash esta vacio");
+        if (listaCancion.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "la pila esta vacia");
             return;
         }
         int idCancion;
@@ -156,19 +148,12 @@ public class CtlHash {
             return;
         }
         long tiempo = System.nanoTime();
-        Cancion aux = map.get(idCancion);
+        Cancion aux = listaCancion.get(idCancion);
         tiempo = System.nanoTime() - tiempo;
-        Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "Hash", new BigInteger(limit + ""), new BigInteger(tiempo + "")));
+        Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "ArrayList", new BigInteger(limit + ""), new BigInteger(tiempo + "")));
         JOptionPane.showMessageDialog(null, "Se ha encontrado la cancion\n"
-                + "Nombre: "+aux.getNombre()+"\n"
-                            + "Duracion: "+aux.getDuracion()+"\n"
-                                    + "Fecha Lanzamiento: "+aux.getFechaLanzamiento());
+                + "Nombre: " + aux.getNombre() + "\n"
+                + "Duracion: " + aux.getDuracion() + "\n"
+                + "Fecha Lanzamiento: " + aux.getFechaLanzamiento());
     }
-
-    public void mostrarHash() {
-        for (int i = 1; i < map.size() + 1; i++) {
-            System.out.println(map.get(i).toString());
-        }
-    }
-
 }

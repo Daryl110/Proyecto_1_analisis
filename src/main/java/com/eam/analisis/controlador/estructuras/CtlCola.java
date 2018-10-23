@@ -24,18 +24,13 @@ import javax.swing.JOptionPane;
  */
 public class CtlCola {
 
-    protected DAO dao;
-    Queue<Cancion> cola;
+    
+    public static Queue<Cancion> cola = new LinkedList<>();
 
-    public CtlCola() {
 
-        dao = new DAO("ConexionBD");
+    public static void llenarCola(int capacida) {
         cola = new LinkedList();
-    }
-
-    public void llenarCola(int capacida) {
-        cola = new LinkedList();
-        ArrayList<Cancion> lstCanciones = new ArrayList<>(dao.cargarConsulta("Select * from ANALISIS.CANCION WHERE ROWNUM <=" + capacida + "", Cancion.class));
+        ArrayList<Cancion> lstCanciones = new ArrayList<>(Main.dao.cargarConsulta("Select * from ANALISIS.CANCION WHERE ROWNUM <=" + capacida + "", Cancion.class));
         long tiempo = System.nanoTime();
         for (Cancion cancion : lstCanciones) {
             cola.offer(cancion);
@@ -52,7 +47,7 @@ public class CtlCola {
 //        cola.offer(cancion);
 //        tiempo = System.nanoTime() - tiempo;
 //    }
-    public void removerCola(int capacida) {
+    public static void removerCola(int capacida) {
         int valor = capacida;
         if (cola.isEmpty()) {
             JOptionPane.showMessageDialog(null, "La cola esta vacia");
@@ -72,12 +67,12 @@ public class CtlCola {
         }
     }
 
-    public void actualizarCola(int capacida) {
+    public static void actualizarCola(int capacida) {
         if (cola.isEmpty()) {
             JOptionPane.showMessageDialog(null, "La cola esta vacia");
         } else {
             if (capacida > cola.size()) {
-                JOptionPane.showMessageDialog(null, "Se ha especificado un valor de elementos a eliminar mas grande que el tamaño de la lista");
+                JOptionPane.showMessageDialog(null, "Se ha especificado un valor de elementos a modificar mas grande que el tamaño de la lista");
                 return;
             }
             int id,
@@ -147,7 +142,7 @@ public class CtlCola {
         }
     }
 
-    public void buscarCola(int capacidad) {
+    public static void buscarCola(int capacidad) {
         if (cola.isEmpty()) {
             JOptionPane.showMessageDialog(null, "La cola esta vacia");
             return;
@@ -185,7 +180,7 @@ public class CtlCola {
         }
     }
 
-    private void organizarCola(Queue<Cancion> cola, Queue<Cancion> aux) {
+    private static void organizarCola(Queue<Cancion> cola, Queue<Cancion> aux) {
         while (!cola.isEmpty()) {
             aux.offer(cola.poll());
         }

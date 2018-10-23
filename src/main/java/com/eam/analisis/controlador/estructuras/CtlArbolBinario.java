@@ -5,63 +5,61 @@
  */
 package com.eam.analisis.controlador.estructuras;
 
+import com.eam.analisis.controlador.Main;
 import com.eam.analisis.dao.DAO;
 import com.eam.analisis.modelo.Cancion;
+import com.eam.analisis.modelo.EstadisticaEstructura;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.TreeSet;
+import javax.swing.JOptionPane;
 
 public class CtlArbolBinario {
 
-    protected DAO dao;
-    public long tiempo = 0;
-    TreeSet<Cancion> arbol;
 
-    public CtlArbolBinario() {
-        dao = new DAO("ConexionBD");
-        arbol = new TreeSet<>();
-    }
+    public static TreeSet<Cancion> arbol = new TreeSet<>();
 
-    public void llenarArbol(int capacida) {
+    public static void llenarArbol(int capacida) {
         arbol = new TreeSet<>();
-        ArrayList<Cancion> lstCanciones = new ArrayList<>(dao.cargarConsulta("Select * from ANALISIS.CANCION WHERE ROWNUM <=" + capacida + "", Cancion.class));
-        long tiempoInicio = System.nanoTime();
+        ArrayList<Cancion> lstCanciones = new ArrayList<>(Main.dao.cargarConsulta("Select * from ANALISIS.CANCION WHERE ROWNUM <=" + capacida + "", Cancion.class));
+        long tiempo = System.nanoTime();
         for (Cancion cancion : lstCanciones) {
             arbol.add(cancion);
         }
-        tiempo = System.nanoTime() - tiempoInicio;
+        tiempo = System.nanoTime() - tiempo;
+        Main.dao.guardar(new EstadisticaEstructura("insert", "Arbol", new BigInteger(capacida + ""), new BigInteger(tiempo + "")));
+        JOptionPane.showMessageDialog(null, "Se ha ingresado con exito");
 
     }
 
-    public Cancion removerArbol(int capacida, int valor) {
-        llenarArbol(capacida);
-        long tiempoInicio = System.nanoTime();
+    public static void removerArbol(int capacida, int valor) {
+        long tiempo = System.nanoTime();
         for (Cancion cancion : arbol) {
             if (Integer.parseInt(cancion.getId() + "") == valor) {
                 arbol.remove(cancion);
             }
         }
-        tiempo = System.nanoTime() - tiempoInicio;
-        return null;
+        tiempo = System.nanoTime() - tiempo;
     }
 
     public Cancion buscarArbol(int capacida, int valor) {
         llenarArbol(capacida);
-        long tiempoInicio = System.nanoTime();
+        long tiempo = System.nanoTime();
         for (Cancion cancion : arbol) {
             if (Integer.parseInt(cancion.getId() + "") == valor) {
                 return cancion;
             }
         }
-        tiempo = System.nanoTime() - tiempoInicio;
+        tiempo = System.nanoTime() - tiempo;
         return null;
     }
 
     public void añadirArbol(int capacida, Cancion cancion) {
         llenarArbol(capacida);
-        long tiempoInicio = System.nanoTime();
+        long tiempo = System.nanoTime();
         arbol.add(cancion);
-        tiempo = System.nanoTime() - tiempoInicio;
+        tiempo = System.nanoTime() - tiempo;
     }
 
     public void mostrarArbol() {

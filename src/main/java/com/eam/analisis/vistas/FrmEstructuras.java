@@ -3,8 +3,12 @@ package com.eam.analisis.vistas;
 import com.eam.analisis.controlador.TablasPivoteadas;
 import com.eam.analisis.controlador.Main;
 import com.eam.analisis.controlador.estructuras.CtlArbolAvl;
+import com.eam.analisis.controlador.estructuras.CtlArray;
+import com.eam.analisis.controlador.estructuras.CtlCola;
+import com.eam.analisis.controlador.estructuras.CtlHash;
 import com.eam.analisis.controlador.estructuras.CtlListaDoble;
 import com.eam.analisis.controlador.estructuras.CtlListaSimple;
+import com.eam.analisis.controlador.estructuras.CtlPila;
 import com.eam.analisis.modelo.Cancion;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -55,7 +59,7 @@ public class FrmEstructuras extends javax.swing.JFrame {
             }
         });
 
-        cbTipoEstructura.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione una estructura", "Lista Simple", "Lista Doble", "Arbol AVL" }));
+        cbTipoEstructura.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione una estructura", "Lista Simple", "Lista Doble", "Arbol AVL", "Cola", "ArrayList", "Hash" }));
 
         cbCantidaD.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione una cantidad", "100", "1000", "10000", "100000", "500000", "1000000" }));
 
@@ -249,6 +253,86 @@ public class FrmEstructuras extends javax.swing.JFrame {
                                 case "busquedad secuencial":
                                     JOptionPane.showMessageDialog(this, "No esta permitda la busqueda secuencial\n"
                                             + "en este tipo de estructura de datos");
+                                    break;
+                            }
+                            break;
+                        case "Cola":
+                            switch (strOperacion) {
+                                case "Insert":
+                                    CtlCola.llenarCola(cantidadCanciones);
+                                    break;
+                                case "Update":
+                                    CtlCola.actualizarCola(cantidadCanciones);
+                                    break;
+                                case "Delete":
+                                    CtlCola.removerCola(cantidadCanciones);
+                                    break;
+                                case "busquedad binaria":
+                                    JOptionPane.showMessageDialog(this, "No esta permitda la busqueda secuencial\n"
+                                            + "en este tipo de estructura de datos");
+                                    break;
+                                case "busquedad secuencial":
+                                    CtlCola.buscarCola(operacion);
+                                    break;
+                            }
+                            break;
+                        case "ArrayList":
+                            switch (strOperacion) {
+                                case "Insert":
+                                    CtlArray.llenarArray(cantidadCanciones);
+                                    break;
+                                case "Update":
+                                    CtlArray.actualizarArray(cantidadCanciones);
+                                    break;
+                                case "Delete":
+                                    CtlArray.removerArray(cantidadCanciones);
+                                    break;
+                                case "busquedad binaria":
+                                    JOptionPane.showMessageDialog(this, "No esta permitda la busqueda secuencial\n"
+                                            + "en este tipo de estructura de datos");
+                                    break;
+                                case "busquedad secuencial":
+                                    CtlArray.buscar(cantidadCanciones);
+                                    break;
+                            }
+                            break;
+                        case "Hash":
+                            switch (strOperacion) {
+                                case "Insert":
+                                    CtlHash.llenarHash(cantidadCanciones);
+                                    break;
+                                case "Update":
+                                    CtlHash.actualizarHash(cantidadCanciones);
+                                    break;
+                                case "Delete":
+                                    CtlHash.removerHash(cantidadCanciones);
+                                    break;
+                                case "busquedad binaria":
+                                    JOptionPane.showMessageDialog(this, "No esta permitda la busqueda secuencial\n"
+                                            + "en este tipo de estructura de datos");
+                                    break;
+                                case "busquedad secuencial":
+                                    CtlHash.buscar(cantidadCanciones);
+                                    break;
+                            }
+                            break;
+                        case "Pila":
+                            switch (strOperacion) {
+                                case "Insert":
+                                    CtlPila.llenarPila(cantidadCanciones);
+                                    break;
+                                case "Update":
+                                    CtlPila.actualizarPila(cantidadCanciones);
+                                    break;
+                                case "Delete":
+                                    CtlPila.removerPila(cantidadCanciones);
+                                    break;
+                                case "busquedad binaria":
+                                    JOptionPane.showMessageDialog(this, "No esta permitda la busqueda secuencial\n"
+                                            + "en este tipo de estructura de datos");
+                                    break;
+                                case "busquedad secuencial":
+                                    CtlPila.buscar(cantidadCanciones);
                                     break;
                             }
                             break;
