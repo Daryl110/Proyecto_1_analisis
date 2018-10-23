@@ -10,6 +10,7 @@ import com.eam.analisis.controlador.estructuras.CtlCola;
 import com.eam.analisis.controlador.estructuras.CtlHash;
 import com.eam.analisis.controlador.estructuras.CtlListaDoble;
 import com.eam.analisis.controlador.estructuras.CtlListaSimple;
+import com.eam.analisis.controlador.reportes.CtlReportes;
 import com.eam.analisis.controlador.estructuras.CtlPila;
 import com.eam.analisis.modelo.Cancion;
 import java.math.BigDecimal;
@@ -135,6 +136,11 @@ public class FrmEstructuras extends javax.swing.JFrame {
         });
 
         jButton1.setText("Graficar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -394,6 +400,10 @@ public class FrmEstructuras extends javax.swing.JFrame {
         this.listarEstructuras();
     }//GEN-LAST:event_cbFiltroCantidadItemStateChanged
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        CtlReportes.graficarEstructuras();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnCalcular;
@@ -411,7 +421,7 @@ public class FrmEstructuras extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void listarEstructuras() {
-        if (cbFiltroCantidad.getSelectedIndex() != 0 && cbFiltroCantidad.getSelectedIndex() <= 6) {
+        if (cbFiltroCantidad.getSelectedIndex() != 0) {
             tblEstructuras.setModel(TablasPivoteadas.listarEstructuras(Integer.parseInt(cbFiltroCantidad.getSelectedItem().toString())));
         } else {
             tblEstructuras.setModel(new DefaultTableModel());
