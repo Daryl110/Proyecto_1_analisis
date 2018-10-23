@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Estadisticas_ordenacion" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="40797f94-1bc9-4ecf-9ec6-1126dfaf104b">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="proyecto_1_analisis"/>
+	<queryString language="SQL">
+		<![CDATA[select TIPO_DATO tipoDato, TIPO_ORDENACION metodoOrdenacion, avg(TIEMPO) tiempo from ESTADISTICA_ORDENACION
+GROUP by TIPO_DATO,TIPO_ORDENACION]]>
+	</queryString>
+	<field name="TIPODATO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TIPODATO"/>
+	</field>
+	<field name="METODOORDENACION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="METODOORDENACION"/>
+	</field>
+	<field name="TIEMPO" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TIEMPO"/>
+	</field>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="-20" y="0" width="792" height="79" uuid="74a73efe-324b-470f-b91f-10666866f747"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="50"/>
+				</textElement>
+				<text><![CDATA[METODOS DE ORDENACIÓN]]></text>
+			</staticText>
+		</band>
+	</title>
+	<summary>
+		<band height="338" splitType="Stretch">
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="0" width="750" height="338" uuid="856406c6-ed7f-498d-8661-d88e9091904f"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{TIPODATO}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{METODOORDENACION}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{TIEMPO}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</summary>
+</jasperReport>

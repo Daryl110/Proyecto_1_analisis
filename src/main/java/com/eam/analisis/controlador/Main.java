@@ -3,7 +3,6 @@
  */
 package com.eam.analisis.controlador;
 
-import com.eam.analisis.controlador.estructuras.CtlListaDoble;
 import com.eam.analisis.dao.DAO;
 import com.eam.analisis.vistas.FrmPrincipal;
 
@@ -15,7 +14,6 @@ public class Main {
     public static DAO dao = new DAO("ConexionBD");
 
     public static void main(String[] args) {
-        
         iniciarVentanaPrincipal();
     }
 

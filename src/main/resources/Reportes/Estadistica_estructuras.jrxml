@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Estadistica_estructuras" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="af38e612-68db-41e3-8e79-b39dd5189ae5">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="proyecto_1_analisis"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString language="SQL">
+		<![CDATA[select TIPO_OPERACION operacion, TIPO_ESTRUCTURA estructura, avg(TIEMPO) tiempo from ESTADISTICA_ESTRUCTURA
+GROUP by TIPO_OPERACION,TIPO_ESTRUCTURA]]>
+	</queryString>
+	<field name="OPERACION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="OPERACION"/>
+	</field>
+	<field name="ESTRUCTURA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ESTRUCTURA"/>
+	</field>
+	<field name="TIEMPO" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TIEMPO"/>
+	</field>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="-20" y="0" width="792" height="79" uuid="5af4e11b-611c-46a1-918a-b25c3c83cf89"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="50"/>
+				</textElement>
+				<text><![CDATA[ESTRUCTURAS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<summary>
+		<band height="352">
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="0" width="750" height="352" uuid="af5845d6-6847-4427-9968-67747a83cc42"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{OPERACION}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{ESTRUCTURA}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{TIEMPO}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</summary>
+</jasperReport>
