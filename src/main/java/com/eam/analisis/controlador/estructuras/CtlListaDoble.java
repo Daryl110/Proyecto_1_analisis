@@ -3,10 +3,10 @@
  */
 package com.eam.analisis.controlador.estructuras;
 
-import eam.librerias.estructuras.listaDoble.Nodo;
 import com.eam.analisis.controlador.Main;
 import com.eam.analisis.modelo.Cancion;
 import com.eam.analisis.modelo.EstadisticaEstructura;
+import eam.librerias.estructuras.listaDoble.Nodo;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -136,7 +136,7 @@ public class CtlListaDoble {
         }
     }
 
-    public static void buscarSecuencial() {
+    public static void buscarSecuencial(int limit) {
         if (canciones.isEmpty()) {
             JOptionPane.showMessageDialog(null, "La Lista esta vacia");
             return;
@@ -149,7 +149,7 @@ public class CtlListaDoble {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se ha ingresado un id valido");
-            buscarSecuencial();
+            buscarSecuencial(limit);
             return;
         }
         long time = System.nanoTime();
@@ -161,7 +161,7 @@ public class CtlListaDoble {
             aux = aux.getSiguiente();
         }
         time = System.nanoTime() - time;
-        Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "ListaDoble", new BigInteger(1 + ""), new BigInteger(time + "")));
+        Main.dao.guardar(new EstadisticaEstructura("Busqueda Secuencial", "ListaDoble", new BigInteger(limit + ""), new BigInteger(time + "")));
     }
 
     //Implementando...
@@ -178,7 +178,7 @@ public class CtlListaDoble {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se ha ingresado un id valido");
-            buscarSecuencial();
+            buscarBinario();
             return;
         }
         long time = System.nanoTime();

@@ -17,9 +17,7 @@ public class TablasPivoteadas {
         String[] columnas = {"Operacion", "Lista Simple", "Lista Doble", "ArbolAVL"};
         DefaultTableModel modelo = new DefaultTableModel(new Object[][]{}, columnas);
         
-        String query;
-        if (!filtro.getClass().getSimpleName().equalsIgnoreCase("String")) {
-            query = "SELECT TIPO_OPERACION, NVL(\"'ListaSimple'\",0), NVL(\"'ListaDoble'\",0), NVL(\"'ArbolAVL'\",0) FROM "
+        String query = "SELECT TIPO_OPERACION, NVL(\"'ListaSimple'\",0), NVL(\"'ListaDoble'\",0), NVL(\"'ArbolAVL'\",0) FROM "
                 + "( "
                 + "    SELECT EE.TIPO_OPERACION, EE.TIPO_ESTRUCTURA, TIEMPO FROM ESTADISTICA_ESTRUCTURA EE "
                 + "    WHERE EE.NUMERO_CANCIONES="+filtro+" "
@@ -29,18 +27,6 @@ public class TablasPivoteadas {
                 + "    AVG(TIEMPO) "
                 + "    FOR TIPO_ESTRUCTURA IN ('ListaSimple','ListaDoble','ArbolAVL') "
                 + ")";
-        }else{
-            query = "SELECT TIPO_OPERACION, NVL(\"'ListaSimple'\",0), NVL(\"'ListaDoble'\",0), NVL(\"'ArbolAVL'\",0) FROM "
-                + "( "
-                + "    SELECT EE.TIPO_OPERACION, EE.TIPO_ESTRUCTURA, TIEMPO FROM ESTADISTICA_ESTRUCTURA EE "
-                + "    WHERE REGEXP_LIKE(EE.TIPO_OPERACION,'b','i')"
-                + ") "
-                + "PIVOT "
-                + "( "
-                + "    AVG(TIEMPO) "
-                + "    FOR TIPO_ESTRUCTURA IN ('ListaSimple','ListaDoble','ArbolAVL') "
-                + ")";
-        }
 
         ArrayList<Object[]> resulSet = new ArrayList<>(Main.dao.cargarConsulta(query, null));
 

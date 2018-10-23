@@ -43,8 +43,8 @@ public class FrmEstructuras extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         btnAtras = new javax.swing.JButton();
-        pnlGrafica = new javax.swing.JPanel();
         cbFiltroCantidad = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -90,7 +90,7 @@ public class FrmEstructuras extends javax.swing.JFrame {
             .addGroup(pnlTablaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(pnlTablaLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -121,25 +121,14 @@ public class FrmEstructuras extends javax.swing.JFrame {
             }
         });
 
-        pnlGrafica.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)));
-
-        javax.swing.GroupLayout pnlGraficaLayout = new javax.swing.GroupLayout(pnlGrafica);
-        pnlGrafica.setLayout(pnlGraficaLayout);
-        pnlGraficaLayout.setHorizontalGroup(
-            pnlGraficaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        pnlGraficaLayout.setVerticalGroup(
-            pnlGraficaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        cbFiltroCantidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione el filtro de cantidad", "100", "1000", "10000", "100000", "500000", "1000000", "Busquedas" }));
+        cbFiltroCantidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione el filtro de cantidad", "100", "1000", "10000", "100000", "500000", "1000000" }));
         cbFiltroCantidad.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbFiltroCantidadItemStateChanged(evt);
             }
         });
+
+        jButton1.setText("Graficar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -155,13 +144,12 @@ public class FrmEstructuras extends javax.swing.JFrame {
                         .addGap(300, 300, 300)
                         .addComponent(cbCrud, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(pnlTabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbFiltroCantidad, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(cbFiltroCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlGrafica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(btnAtras, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCalcular, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnCalcular, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlTabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -175,12 +163,11 @@ public class FrmEstructuras extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addComponent(btnCalcular)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(cbFiltroCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlTabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(pnlGrafica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbFiltroCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlTabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAtras)
                 .addContainerGap())
@@ -221,7 +208,7 @@ public class FrmEstructuras extends javax.swing.JFrame {
                                             + "en este tipo de estructura de datos");
                                     break;
                                 case "busquedad secuencial":
-                                    CtlListaSimple.buscar();
+                                    CtlListaSimple.buscar(cantidadCanciones);
                                     break;
                             }
                             break;
@@ -241,7 +228,7 @@ public class FrmEstructuras extends javax.swing.JFrame {
                                             + "en este tipo de estructura de datos");
                                     break;
                                 case "busquedad secuencial":
-                                    CtlListaDoble.buscarSecuencial();
+                                    CtlListaDoble.buscarSecuencial(cantidadCanciones);
                                     break;
                             }
                             break;
@@ -257,7 +244,7 @@ public class FrmEstructuras extends javax.swing.JFrame {
                                     CtlArbolAvl.remove(cantidadCanciones);
                                     break;
                                 case "busquedad binaria":
-                                    CtlArbolAvl.buscar();
+                                    CtlArbolAvl.buscar(cantidadCanciones);
                                     break;
                                 case "busquedad secuencial":
                                     JOptionPane.showMessageDialog(this, "No esta permitda la busqueda secuencial\n"
@@ -268,34 +255,7 @@ public class FrmEstructuras extends javax.swing.JFrame {
                     }
                     this.listarEstructuras();
                 } else {
-                    if (strOperacion.equals("busquedad binaria") || strOperacion.equals("busquedad secuencial")) {
-                        switch (strEstructura) {
-                            case "Lista Simple":
-                                switch (strOperacion) {
-                                    case "busquedad binaria":
-                                        JOptionPane.showMessageDialog(this, "No esta permitda la busqueda binaria\n"
-                                                + "en este tipo de estructura de datos");
-                                        break;
-                                    case "busquedad secuencial":
-                                        CtlListaSimple.buscar();
-                                        break;
-                                }
-                                break;
-                            case "Lista Doble":
-                                switch (strOperacion) {
-                                    case "busquedad binaria":
-                                        JOptionPane.showMessageDialog(this, "No esta permitda la busqueda binaria\n"
-                                                + "en este tipo de estructura de datos");
-                                        break;
-                                    case "busquedad secuencial":
-                                        CtlListaDoble.buscarSecuencial();
-                                        break;
-                                }
-                                break;
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Debe seleccionar una cantidad valida de datos");
-                    }
+                    JOptionPane.showMessageDialog(this, "Debe seleccionar una cantidad valida de datos");
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "No se ha seleccionado una operacion valida");
@@ -316,11 +276,11 @@ public class FrmEstructuras extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbCrud;
     private javax.swing.JComboBox<String> cbFiltroCantidad;
     private javax.swing.JComboBox<String> cbTipoEstructura;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPanel pnlGrafica;
     private javax.swing.JPanel pnlTabla;
     private javax.swing.JTable tblEstructuras;
     // End of variables declaration//GEN-END:variables
@@ -328,8 +288,6 @@ public class FrmEstructuras extends javax.swing.JFrame {
     private void listarEstructuras() {
         if (cbFiltroCantidad.getSelectedIndex() != 0 && cbFiltroCantidad.getSelectedIndex() <= 6) {
             tblEstructuras.setModel(TablasPivoteadas.listarEstructuras(Integer.parseInt(cbFiltroCantidad.getSelectedItem().toString())));
-        } else if (cbFiltroCantidad.getSelectedIndex() > 6) {
-            tblEstructuras.setModel(TablasPivoteadas.listarEstructuras(cbFiltroCantidad.getSelectedItem().toString()));
         } else {
             tblEstructuras.setModel(new DefaultTableModel());
         }

@@ -124,7 +124,7 @@ public class CtlArbolAvl {
         }
     }
     
-    public static void buscar(){
+    public static void buscar(int limit){
         if (canciones.isEmpty()) {
             JOptionPane.showMessageDialog(null, "La Lista esta vacia");
             return;
@@ -137,12 +137,12 @@ public class CtlArbolAvl {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "No se ha ingresado un id valido");
-            buscar();
+            buscar(limit);
             return;
         }
         long time = System.nanoTime();
         canciones.get(new BigDecimal(idCancion+""));
         time = System.nanoTime() - time;
-        Main.dao.guardar(new EstadisticaEstructura("Busqueda Binaria", "ArbolAVL", new BigInteger(1 + ""), new BigInteger(time + "")));
+        Main.dao.guardar(new EstadisticaEstructura("Busqueda Binaria", "ArbolAVL", new BigInteger(limit + ""), new BigInteger(time + "")));
     }
 }
