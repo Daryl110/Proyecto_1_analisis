@@ -1,5 +1,7 @@
 /*
- *  2018 Daryl Ospina
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package com.eam.analisis.modelo;
 
@@ -18,14 +20,14 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Daryl Ospina
+ * @author nick_
  */
 @Entity
 @Table(name = "ESTADISTICA_ORDENACION")
 @NamedQueries({
     @NamedQuery(name = "EstadisticaOrdenacion.findAll", query = "SELECT e FROM EstadisticaOrdenacion e")
-    , @NamedQuery(name = "EstadisticaOrdenacion.findById", query = "SELECT e FROM EstadisticaOrdenacion e WHERE e.id = :id")
-    , @NamedQuery(name = "EstadisticaOrdenacion.findByTipoTransaccion", query = "SELECT e FROM EstadisticaOrdenacion e WHERE e.tipoTransaccion = :tipoTransaccion")
+    , @NamedQuery(name = "EstadisticaOrdenacion.findByIdOrdenacion", query = "SELECT e FROM EstadisticaOrdenacion e WHERE e.idOrdenacion = :idOrdenacion")
+    , @NamedQuery(name = "EstadisticaOrdenacion.findByTipoDato", query = "SELECT e FROM EstadisticaOrdenacion e WHERE e.tipoDato = :tipoDato")
     , @NamedQuery(name = "EstadisticaOrdenacion.findByTipoOrdenacion", query = "SELECT e FROM EstadisticaOrdenacion e WHERE e.tipoOrdenacion = :tipoOrdenacion")
     , @NamedQuery(name = "EstadisticaOrdenacion.findByNumeroCanciones", query = "SELECT e FROM EstadisticaOrdenacion e WHERE e.numeroCanciones = :numeroCanciones")
     , @NamedQuery(name = "EstadisticaOrdenacion.findByTiempo", query = "SELECT e FROM EstadisticaOrdenacion e WHERE e.tiempo = :tiempo")})
@@ -34,11 +36,12 @@ public class EstadisticaOrdenacion implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
+    @Basic(optional = false)
     @GeneratedValue(generator = "ID_ORDENACION", strategy = GenerationType.AUTO)
     @Column(name = "ID_ORDENACION")
-    private BigDecimal id;
-    @Column(name = "TIPO_TRANSACCION")
-    private String tipoTransaccion;
+    private BigDecimal idOrdenacion;
+    @Column(name = "TIPO_DATO")
+    private String tipoDato;
     @Column(name = "TIPO_ORDENACION")
     private String tipoOrdenacion;
     @Column(name = "NUMERO_CANCIONES")
@@ -49,24 +52,31 @@ public class EstadisticaOrdenacion implements Serializable {
     public EstadisticaOrdenacion() {
     }
 
-    public EstadisticaOrdenacion(BigDecimal id) {
-        this.id = id;
+    public EstadisticaOrdenacion(BigDecimal idOrdenacion) {
+        this.idOrdenacion = idOrdenacion;
     }
 
-    public BigDecimal getId() {
-        return id;
+    public BigDecimal getIdOrdenacion() {
+        return idOrdenacion;
     }
 
-    public void setId(BigDecimal id) {
-        this.id = id;
+    public EstadisticaOrdenacion(String tipoDato, String tipoOrdenacion, BigInteger numeroCanciones, BigInteger tiempo) {
+        this.tipoDato = tipoDato;
+        this.tipoOrdenacion = tipoOrdenacion;
+        this.numeroCanciones = numeroCanciones;
+        this.tiempo = tiempo;
     }
 
-    public String getTipoTransaccion() {
-        return tipoTransaccion;
+    public void setIdOrdenacion(BigDecimal idOrdenacion) {
+        this.idOrdenacion = idOrdenacion;
     }
 
-    public void setTipoTransaccion(String tipoTransaccion) {
-        this.tipoTransaccion = tipoTransaccion;
+    public String getTipoDato() {
+        return tipoDato;
+    }
+
+    public void setTipoDato(String tipoDato) {
+        this.tipoDato = tipoDato;
     }
 
     public String getTipoOrdenacion() {
@@ -96,7 +106,7 @@ public class EstadisticaOrdenacion implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idOrdenacion != null ? idOrdenacion.hashCode() : 0);
         return hash;
     }
 
@@ -107,7 +117,7 @@ public class EstadisticaOrdenacion implements Serializable {
             return false;
         }
         EstadisticaOrdenacion other = (EstadisticaOrdenacion) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idOrdenacion == null && other.idOrdenacion != null) || (this.idOrdenacion != null && !this.idOrdenacion.equals(other.idOrdenacion))) {
             return false;
         }
         return true;
@@ -115,7 +125,7 @@ public class EstadisticaOrdenacion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.eam.analisis.modelo.EstadisticaOrdenacion[ id=" + id + " ]";
+        return "com.eam.analisis.modelo.EstadisticaOrdenacion[ idOrdenacion=" + idOrdenacion + " ]";
     }
     
 }

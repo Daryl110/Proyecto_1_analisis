@@ -6,6 +6,7 @@
 package com.eam.analisis.controlador.metodosOrdenacion;
 
 import com.eam.analisis.modelo.Cancion;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Date;
  */
 public class MetodosOrdenacionFecha {
 
-    public static void ordenarMonticulo(Cancion[] arreglo) {
+    public static void ordenarMonticulo(ArrayList<Cancion> arreglo) {
         /* Este método realiza un heapsort en el lugar. Comenzando
         desde el principio del arreglo, el arreglo se intercambia
         en un montón máximo binario. Luego se eliminan los elementos.
@@ -22,14 +23,14 @@ public class MetodosOrdenacionFecha {
         sección del arreglo. 
         
         Inserción en el montón */
-        for (int heapsize = 0; heapsize < arreglo.length; heapsize++) {
+        for (int heapsize = 0; heapsize < arreglo.size(); heapsize++) {
             /* Paso uno en agregar un elemento al montón en el
                 Coloque ese elemento al final del arreglo de pila
                 En este caso, el elemento ya está allí. */
             int n = heapsize; // el índice del int insertado
             while (n > 0) { // until we reach the root of the heap
                 int p = (n - 1) / 2; // Hasta que lleguemos a la raíz del montón.
-                if (arreglo[n].getFechaLanzamiento().compareTo(arreglo[p].getFechaLanzamiento()) > 0) { // el índice del int insertado
+                if (arreglo.get(n).getFechaLanzamiento().compareTo(arreglo.get(p).getFechaLanzamiento()) > 0) { // el índice del int insertado
                     cambiarPosicion(arreglo, n, p); // el niño es más grande que el padre
                     n = p; // comprobar padre
                 } else // el padre es más grande que el niño
@@ -40,7 +41,7 @@ public class MetodosOrdenacionFecha {
         }
 
         /* Eliminación de montón */
-        for (int heapsize = arreglo.length; heapsize > 0;) {
+        for (int heapsize = arreglo.size(); heapsize > 0;) {
             cambiarPosicion(arreglo, 0, --heapsize); // intercambiar raíz con el último elemento de montón
             int n = 0; // índice del elemento que se mueve hacia abajo del árbol
             while (true) {
@@ -51,14 +52,14 @@ public class MetodosOrdenacionFecha {
                 }
                 int right = left + 1;
                 if (right >= heapsize) { // El nodo tiene un hijo izquierdo, pero ningún hijo derecho
-                    if (arreglo[left].getFechaLanzamiento().compareTo(arreglo[n].getFechaLanzamiento()) > 0) // si el hijo izquierdo es mayor que el nodo
+                    if (arreglo.get(left).getFechaLanzamiento().compareTo(arreglo.get(n).getFechaLanzamiento()) > 0) // si el hijo izquierdo es mayor que el nodo
                     {
                         cambiarPosicion(arreglo, left, n); // intercambiar hijo izquierdo con nodo
                     }
                     break; // el montón es heapified
                 }
-                if (arreglo[left].getFechaLanzamiento().compareTo(arreglo[n].getFechaLanzamiento()) > 0) { // (left > n)
-                    if (arreglo[left].getFechaLanzamiento().compareTo(arreglo[right].getFechaLanzamiento()) > 0) { // (left > right) & (left > n)
+                if (arreglo.get(left).getFechaLanzamiento().compareTo(arreglo.get(n).getFechaLanzamiento()) > 0) { // (left > n)
+                    if (arreglo.get(left).getFechaLanzamiento().compareTo(arreglo.get(right).getFechaLanzamiento()) > 0) { // (left > right) & (left > n)
                         cambiarPosicion(arreglo, left, n);
                         n = left; // continuar la recursión en el niño izquierdo
                     } else { // (right > left > n)
@@ -66,7 +67,7 @@ public class MetodosOrdenacionFecha {
                         n = right; // continuar la recursión en el niño derecho
                     }
                 } else { // (n > left)
-                    if (arreglo[right].getFechaLanzamiento().compareTo(arreglo[n].getFechaLanzamiento()) > 0) { // (right > n > left)
+                    if (arreglo.get(right).getFechaLanzamiento().compareTo(arreglo.get(n).getFechaLanzamiento()) > 0) { // (right > n > left)
                         cambiarPosicion(arreglo, right, n);
                         n = right;// continuar la recursión en el niño derecho
                     } else { // (n > left) & (n > right)
@@ -77,24 +78,24 @@ public class MetodosOrdenacionFecha {
         }
     }
 
-    private static void cambiarPosicion(Cancion[] array, int i, int j) {
+    private static void cambiarPosicion(ArrayList<Cancion> array, int i, int j) {
         Cancion temp;
-        temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
+        temp = array.get(i);
+        array.set(i, array.get(j));
+        array.set(j, temp);
     }
 
-    public static void ordenarBurbuja(Cancion[] arreglo) {
+    public static void ordenarBurbuja(ArrayList<Cancion> arreglo) {
         int iteracion = 1;// establece el lugar hasta donde se iterará
         boolean permutacion;
         do {
             permutacion = false;// valida que el ciclo no sea infinito
-            for (int i = 0; i < arreglo.length - iteracion; i++) {
-                if (arreglo[i].getFechaLanzamiento().compareTo(arreglo[i + 1].getFechaLanzamiento()) > 0) {
+            for (int i = 0; i < arreglo.size() - iteracion; i++) {
+                if (arreglo.get(i).getFechaLanzamiento().compareTo(arreglo.get(i+1).getFechaLanzamiento()) > 0) {
                     permutacion = true;
-                    Cancion aux = arreglo[i];
-                    arreglo[i] = arreglo[i + 1];
-                    arreglo[i + 1] = aux;
+                    Cancion aux = arreglo.get(i);
+                    arreglo.set(i, arreglo.get(i+1));
+                    arreglo.set(i+1, aux);
                 }
             }
             iteracion++;// elimina la iteracion de una posicion,
@@ -102,18 +103,18 @@ public class MetodosOrdenacionFecha {
         } while (permutacion);
     }
 
-    public static void ordenarBurbujaBidireccional(Cancion[] arreglo) {
+    public static void ordenarBurbujaBidireccional(ArrayList<Cancion> arreglo) {
         boolean permutacion;
         int actual = 0, direccion = 1;
-        int comienzo = 1, fin = arreglo.length - 1;
+        int comienzo = 1, fin = arreglo.size() - 1;
         do {
             permutacion = false;
             while (((direccion == 1) && (actual < fin)) || ((direccion == -1) && (actual > comienzo))) {
                 actual += direccion;
-                if (arreglo[actual].getFechaLanzamiento().compareTo(arreglo[actual - 1].getFechaLanzamiento()) < 0) {
-                    Cancion temp = arreglo[actual];
-                    arreglo[actual] = arreglo[actual - 1];
-                    arreglo[actual - 1] = temp;
+                if (arreglo.get(actual).getFechaLanzamiento().compareTo(arreglo.get(actual - 1).getFechaLanzamiento()) < 0) {
+                    Cancion temp = arreglo.get(actual);
+                    arreglo.set(actual, arreglo.get(actual-1));
+                    arreglo.set(actual-1, temp);
                     permutacion = true;
                 }
 
@@ -128,27 +129,27 @@ public class MetodosOrdenacionFecha {
 
     }
 
-    public static void ordenarGnome(Cancion[] arreglo) {
-        for (int i = 0; i < arreglo.length; i++) {
+    public static void ordenarGnome(ArrayList<Cancion> arreglo) {
+        for (int i = 0; i < arreglo.size(); i++) {
             burbuja(arreglo, i);
         }
     }
 
-    private static void burbuja(Cancion[] arreglo, int p) {
+    private static void burbuja(ArrayList<Cancion> arreglo, int p) {
         int j = p;
-        while ((j > 0) && (arreglo[j].getFechaLanzamiento().compareTo(arreglo[j - 1].getFechaLanzamiento()) < 0)) {
-            Cancion t = arreglo[j - 1];
-            arreglo[j - 1] = arreglo[j];
-            arreglo[j] = t;
+        while ((j > 0) && (arreglo.get(j).getFechaLanzamiento().compareTo(arreglo.get(j-1).getFechaLanzamiento()) < 0)) {
+            Cancion t = arreglo.get(j - 1);
+            arreglo.set(j - 1, arreglo.get(j));
+            arreglo.set(j, t);
             j--;
         }
     }
 
-    public static void ordenarMezcla(Cancion[] arreglo) {
-        mergesort(arreglo, 0, arreglo.length - 1);
+    public static void ordenarMezcla(ArrayList<Cancion> arreglo) {
+        mergesort(arreglo, 0, arreglo.size() - 1);
     }
 
-    private static void mergesort(Cancion A[], int izq, int der) {
+    private static void mergesort(ArrayList<Cancion> A, int izq, int der) {
         if (izq < der) {
             int m = (izq + der) / 2;
             mergesort(A, izq, m);
@@ -160,12 +161,12 @@ public class MetodosOrdenacionFecha {
     /*
     http://puntocomnoesunlenguaje.blogspot.com/2014/10/java-mergesort.html
      */
-    private static void merge(Cancion A[], int izq, int m, int der) {
+    private static void merge(ArrayList<Cancion> A, int izq, int m, int der) {
         int i, j, k;
-        Cancion[] B = new Cancion[A.length]; //array auxiliar
+        Cancion[] B = new Cancion[A.size()]; //array auxiliar
         for (i = izq; i <= der; i++) //copia ambas mitades en el array auxiliar
         {
-            B[i] = A[i];
+            B[i] = A.get(i);
         }
 
         i = izq;
@@ -174,22 +175,22 @@ public class MetodosOrdenacionFecha {
         while (i <= m && j <= der) //copia el siguiente elemento más grande
         {
             if (B[i].getFechaLanzamiento().compareTo(B[j].getFechaLanzamiento()) <= 0) {
-                A[k++] = B[i++];
+                A.set(k++, B[i++]);
             } else {
-                A[k++] = B[j++];
+                A.set(k++, B[j++]);
             }
         }
         while (i <= m) //copia los elementos que quedan de la
         {
-            A[k++] = B[i++]; //primera mitad (si los hay)
+            A.set(k++, B[i++]); //primera mitad (si los hay)
         }
     }
 
-    public static void ordenarRapido(Cancion[] arreglo) {
-        quickSort(arreglo, 0, arreglo.length - 1);
+    public static void ordenarRapido(ArrayList<Cancion> arreglo) {
+        quickSort(arreglo, 0, arreglo.size() - 1);
     }
 
-    private static void quickSort(Cancion[] arreglo, int posIzquierda, int posDerecha) {
+    private static void quickSort(ArrayList<Cancion> arreglo, int posIzquierda, int posDerecha) {
         if (posIzquierda >= posDerecha) {
             return;//Caso base con el fin de acabar recurcividad
         }        //Si la posicion izquierda es igual a la posicion derecha, significa que solo hay un numero en la posicion (simulada)
@@ -198,16 +199,16 @@ public class MetodosOrdenacionFecha {
         int pivote = posIzquierda;//Pivote siempre sera el numero en la pocision izquierda
         Cancion aux;
         while (posIzquierda != posDerecha) {
-            while (arreglo[posDerecha].getFechaLanzamiento().compareTo(arreglo[pivote].getFechaLanzamiento()) >= 0 && posIzquierda < posDerecha) {
+            while (arreglo.get(posDerecha).getFechaLanzamiento().compareTo(arreglo.get(pivote).getFechaLanzamiento()) >= 0 && posIzquierda < posDerecha) {
                 posDerecha--;// cambiara de posicion si todo esta bien
             }            // por el lado derecho
-            while (arreglo[posIzquierda].getFechaLanzamiento().compareTo(arreglo[pivote].getFechaLanzamiento()) < 0 && posIzquierda < posDerecha) {
+            while (arreglo.get(posIzquierda).getFechaLanzamiento().compareTo(arreglo.get(pivote).getFechaLanzamiento()) < 0 && posIzquierda < posDerecha) {
                 posIzquierda++;// cambiara de posicion si todo esta bien
             }            // por el lado izquierdo
             if (posDerecha != posIzquierda) {//Cambiara la posicion si hay alguna inconsistencia de mayor o menor
-                aux = arreglo[posDerecha];
-                arreglo[posDerecha] = arreglo[posIzquierda];
-                arreglo[posIzquierda] = aux;
+                aux = arreglo.get(posDerecha);
+                arreglo.set(posDerecha, arreglo.get(posIzquierda));
+                arreglo.set(posIzquierda, aux);
             }
             if (posIzquierda == posDerecha) {//Partira el arreglo en dos partes con el fin de hacer lo mismo con los subconjuntos
                 //Hasta que quede un solo numero (Simulacion)
@@ -217,22 +218,22 @@ public class MetodosOrdenacionFecha {
         }
     }
 
-    public static void ordenarShell(Cancion[] arreglo) {
-        int salto = arreglo.length / 2;//Salto a ralizar para tomar valor a comparar
+    public static void ordenarShell(ArrayList<Cancion> arreglo) {
+        int salto = arreglo.size() / 2;//Salto a ralizar para tomar valor a comparar
         while (salto > 0) {//Mientras el salto sea diferente de 0 se seguira ordenando
-            for (int i = salto; i < arreglo.length; i++) {//Recorrer el arrglo desde la pocision del salto
+            for (int i = salto; i < arreglo.size(); i++) {//Recorrer el arrglo desde la pocision del salto
                 //Hasta la terminacion del arreglo
                 int j = i - salto;//segundo valor i-salto adquiriendo la division del tamaño por 2 e ir restando el valor de i
                 while (j >= 0) {//Mientras el salto no sea 0, esto significa que tomara los valores desde atras a adelante,
                     //Llegando hasta el valor 0
                     int k = j + salto;//este valor tomara valores desde 0 hasta el fin del arreglo
-                    if (arreglo[k].getFechaLanzamiento().compareTo(arreglo[j].getFechaLanzamiento()) >= 0) {
+                    if (arreglo.get(k).getFechaLanzamiento().compareTo(arreglo.get(j).getFechaLanzamiento()) >= 0) {
                         // si las posiciones son menores o iguales, se rompera el ciclo
                         break;
                     } else {//De lo contrario se cambiaran las posiciones
-                        Cancion aux = arreglo[j];
-                        arreglo[j] = arreglo[k];
-                        arreglo[k] = aux;
+                        Cancion aux = arreglo.get(j);
+                        arreglo.set(j, arreglo.get(k));
+                        arreglo.set(k, aux);
                         j -= salto;
                     }
                 }
@@ -241,42 +242,43 @@ public class MetodosOrdenacionFecha {
         }
     }
 
-    public static void OrdenamientoInsercion(Cancion array[]) {
+    public static void OrdenamientoInsercion(ArrayList<Cancion> array) {
         int x, y;
         Cancion aux;
-        for (x = 1; x < array.length; x++) { // desde el segundo elemento hasta el final
-            aux = array[x]; // guardamos el elemento 
+        for (x = 1; x < array.size(); x++) { // desde el segundo elemento hasta el final
+            aux = array.get(x); // guardamos el elemento 
             y = x - 1; // empezamos a comprobar con el anterior
-            while ((y >= 0) && (aux.getFechaLanzamiento().compareTo(array[y].getFechaLanzamiento())) < 0) { // mientras queden posiciones y el valor de aux sea menor que los de la izquierda
-                array[y + 1] = array[y];
+            while ((y >= 0) && (aux.getFechaLanzamiento().compareTo(array.get(y).getFechaLanzamiento())) < 0) { // mientras queden posiciones y el valor de aux sea menor que los de la izquierda
+                
+                array.set(y+1, array.get(y));
                 y--;                   // se desplaza a la derecha
             }
-            array[y + 1] = aux; // colocamos aux en su sitio
+            array.set(y+1, aux); // colocamos aux en su sitio
         }
     }
 
-    public static void OrdenamientoSeleccion(Cancion array[]) {
+    public static void OrdenamientoSeleccion(ArrayList<Cancion> array) {
         int i, j, poss;
         Cancion aux, menor;
-        for (i = 0; i < array.length - 1; i++) { // tomamos como menor el primero
-            menor = array[i]; //  los elementos que quedan por ordenar
+        for (i = 0; i < array.size() - 1; i++) { // tomamos como menor el primero
+            menor = array.get(i); //  los elementos que quedan por ordenar
             poss = i; // guardamos su posición
-            for (j = i + 1; j < array.length; j++) { // buscamos en el array algun elemento menor al actual
-                if (array[j].getFechaLanzamiento().compareTo(menor.getFechaLanzamiento()) < 0) {
-                    menor = array[j];
+            for (j = i + 1; j < array.size(); j++) { // buscamos en el array algun elemento menor al actual
+                if (array.get(j).getFechaLanzamiento().compareTo(menor.getFechaLanzamiento()) < 0) {
+                    menor = array.get(j);
                     poss = j;
                 }
             }
             if (poss != i) { // si hay alguno menor se intercambia
-                aux = array[i];
-                array[i] = array[poss];
-                array[poss] = aux;
+                aux = array.get(i);
+                array.set(i, array.get(poss));
+                array.set(poss, aux);
             }
         }
     }
 
-    public static void OrdenamientoPeine(Cancion array[]) {
-        int gap = array.length;
+    public static void OrdenamientoPeine(ArrayList<Cancion> array) {
+        int gap = array.size();
         boolean permutación = true;
         int actual;
 
@@ -286,13 +288,13 @@ public class MetodosOrdenacionFecha {
             if (gap < 1) {
                 gap = 1;
             }
-            for (actual = 0; actual < array.length - 1 - gap; actual++) {
-                if (array[actual].getFechaLanzamiento().compareTo(array[actual + gap].getFechaLanzamiento()) > 0) {
+            for (actual = 0; actual < array.size() - 1 - gap; actual++) {
+                if (array.get(actual).getFechaLanzamiento().compareTo(array.get(actual + gap).getFechaLanzamiento()) > 0) {
                     permutación = true;
                     // Intercambiamos los dos elementos
-                    Cancion temp = array[actual];
-                    array[actual] = array[actual + gap];
-                    array[actual + gap] = temp;
+                    Cancion temp = array.get(actual);
+                    array.set(actual, array.get(actual + gap));
+                    array.set(actual + gap, temp);
                 }
             }
         }

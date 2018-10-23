@@ -1,22 +1,36 @@
 package com.eam.analisis.vistas;
 
+import com.eam.analisis.controlador.Main;
+import com.eam.analisis.controlador.metodosOrdenacion.MetodosOrdenacion;
+import com.eam.analisis.controlador.metodosOrdenacion.MetodosOrdenacionCadena;
+import com.eam.analisis.controlador.metodosOrdenacion.MetodosOrdenacionFecha;
+import com.eam.analisis.modelo.Cancion;
+import com.eam.analisis.modelo.EstadisticaOrdenacion;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Yo
  */
 public class FrmOrdenamiento extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FrmOrdenamiento
-     */
+    MetodosOrdenacion metodosEnteros;
+    MetodosOrdenacionCadena metodosCadena;
+    MetodosOrdenacionFecha metodosFechas;
+
     public FrmOrdenamiento() {
         initComponents();
+        metodosCadena = new MetodosOrdenacionCadena();
+        metodosEnteros = new MetodosOrdenacion();
+        metodosFechas = new MetodosOrdenacionFecha();
     }
 
     /**
@@ -36,8 +50,12 @@ public class FrmOrdenamiento extends javax.swing.JFrame {
         btnCalcular = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        lstOrdenados = new javax.swing.JList<>();
+        jLabel1 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -61,7 +79,7 @@ public class FrmOrdenamiento extends javax.swing.JFrame {
             }
         });
 
-        cbTipoOrdenacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione una opción", "inserción", "burbja", "burbuja bidireccional", "gnome", "mezcla", "seleccion", "peine", "shell", "monticulos", "rapido" }));
+        cbTipoOrdenacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione una opción", "inserción", "burbuja", "burbuja bidireccional", "gnome", "mezcla", "seleccion", "peine", "shell", "monticulos", "rapido" }));
         cbTipoOrdenacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbTipoOrdenacionActionPerformed(evt);
@@ -71,6 +89,11 @@ public class FrmOrdenamiento extends javax.swing.JFrame {
         cbCantidaD.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione una opción", "100", "1000", "10000", "100000", "500000", "1000000" }));
 
         btnCalcular.setText("Calcular");
+        btnCalcular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCalcularActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)));
 
@@ -87,20 +110,43 @@ public class FrmOrdenamiento extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)));
 
+        jScrollPane1.setViewportView(lstOrdenados);
+
+        jLabel1.setText("Lista de ordenados");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 457, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 425, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un filtro de cantidad de registros" }));
 
         jButton1.setText("Atras");
+
+        jButton2.setText("Actualizar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -110,20 +156,23 @@ public class FrmOrdenamiento extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCalcular, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(cbTipoDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
-                        .addComponent(cbTipoOrdenacion, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(144, 144, 144)
-                        .addComponent(cbCantidaD, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, 570, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(jComboBox1, 0, 670, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnCalcular, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(cbTipoDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
+                                .addComponent(cbTipoOrdenacion, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cbCantidaD, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -135,14 +184,16 @@ public class FrmOrdenamiento extends javax.swing.JFrame {
                     .addComponent(cbTipoOrdenacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbCantidaD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(5, 5, 5)
-                .addComponent(btnCalcular)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCalcular)
+                    .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -152,12 +203,304 @@ public class FrmOrdenamiento extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbTipoDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTipoDatosActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_cbTipoDatosActionPerformed
 
     private void cbTipoOrdenacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbTipoOrdenacionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbTipoOrdenacionActionPerformed
+
+    private void btnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularActionPerformed
+        if (cbCantidaD.getSelectedIndex() == 0) {
+            JOptionPane.showInternalMessageDialog(null, "Seleccione una cantida");
+            return;
+        }
+        if ((cbTipoDatos.getSelectedItem() + "").equals("cadena")) {
+            ArrayList<Cancion> lista;
+            long time = 0;
+            switch (cbTipoDatos.getSelectedIndex()) {
+                case 0:
+                    JOptionPane.showMessageDialog(null, "Seleccione una estructura");
+                    break;
+                case 1:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosCadena.ordenarInsercion(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 2:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosCadena.ordenarBurbuja(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 3:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosCadena.ordenarBurbujaBidireccional(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 4:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosCadena.ordenarGnome(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 5:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosCadena.ordenarMezcla(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 6:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosCadena.ordenarSeleccion(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                case 7:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosCadena.ordenarPeine(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                case 8:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosCadena.ordenarShell(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 9:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosCadena.ordenarMonticulo(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 10:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosCadena.ordenarRapido(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+            }
+        } else if ((cbTipoDatos.getSelectedItem() + "").equals("Entero")) {
+            ArrayList<Cancion> lista;
+            long time = 0;
+            switch (cbTipoDatos.getSelectedIndex()) {
+                case 0:
+                    JOptionPane.showMessageDialog(null, "Seleccione una estructura");
+                    break;
+                case 1:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosEnteros.ordenarInsercion(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 2:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosEnteros.ordenarBurbuja(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 3:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosEnteros.ordenarBurbujaBidireccional(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 4:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosEnteros.ordenarGnome(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 5:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosEnteros.ordenarMezcla(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 6:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosEnteros.ordenarSeleccion(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                case 7:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosEnteros.ordenarPeine(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                case 8:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosEnteros.ordenarShell(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 9:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosEnteros.ordenarMonticulo(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 10:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosEnteros.ordenarRapido(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+            }
+        } else if ((cbTipoDatos.getSelectedItem() + "").equals("Fecha")) {
+            ArrayList<Cancion> lista;
+            long time = 0;
+            switch (cbTipoDatos.getSelectedIndex()) {
+                case 0:
+                    JOptionPane.showMessageDialog(null, "Seleccione una estructura");
+                    break;
+                case 1:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosFechas.OrdenamientoInsercion(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 2:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosFechas.ordenarBurbuja(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 3:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosFechas.ordenarBurbujaBidireccional(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 4:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosFechas.ordenarGnome(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 5:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosFechas.ordenarMezcla(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 6:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosFechas.OrdenamientoSeleccion(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                case 7:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosFechas.OrdenamientoPeine(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                case 8:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosFechas.ordenarShell(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 9:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosFechas.ordenarMonticulo(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+                case 10:
+                    lista = trearArreglo(Integer.parseInt(cbCantidaD.getSelectedItem() + ""));
+                    time = System.nanoTime();
+                    metodosFechas.ordenarRapido(lista);
+                    time = System.nanoTime() - time;
+                    Main.dao.guardar(new EstadisticaOrdenacion(cbTipoDatos.getSelectedItem() + "", cbTipoOrdenacion.getSelectedItem() + "", new BigInteger(cbCantidaD.getSelectedItem() + ""), new BigInteger(time + "")));
+                    llenarLista(lista);
+                    break;
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione una opcion");
+        }
+
+    }//GEN-LAST:event_btnCalcularActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        DefaultListModel modelo = new DefaultListModel();
+        modelo.clear();
+        lstOrdenados.setModel(modelo);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    public ArrayList<Cancion> trearArreglo(int valor) {
+        return new ArrayList(Main.dao.cargarConsulta("SELECT * FROM CANCION WHERE ROWNUM <= " + valor, Cancion.class));
+    }
+
+    public void llenarLista(ArrayList<Cancion> lista) {
+        DefaultListModel modelo = new DefaultListModel();
+        for (Cancion cancion : lista) {
+            modelo.addElement(cancion.toString());
+        }
+        lstOrdenados.setModel(modelo);
+        cbCantidaD.setSelectedIndex(0);
+        cbTipoDatos.setSelectedIndex(0);
+        cbTipoOrdenacion.setSelectedIndex(0);
+
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCalcular;
@@ -165,10 +508,14 @@ public class FrmOrdenamiento extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbTipoDatos;
     private javax.swing.JComboBox<String> cbTipoOrdenacion;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable3;
+    private javax.swing.JList<String> lstOrdenados;
     // End of variables declaration//GEN-END:variables
 }

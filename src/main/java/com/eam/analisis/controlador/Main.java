@@ -15,9 +15,8 @@ public class Main {
     public static DAO dao = new DAO("ConexionBD");
 
     public static void main(String[] args) {
-
+        
         iniciarVentanaPrincipal();
-        System.out.println("Daryl la perra");
     }
 
     public static void iniciarVentanaPrincipal() {
