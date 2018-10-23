@@ -1,5 +1,7 @@
 /*
- *  2018 Daryl Ospina
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package com.eam.analisis.modelo;
 
@@ -18,13 +20,13 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Daryl Ospina
+ * @author nick_
  */
 @Entity
 @Table(name = "ESTADISTICA_ESTRUCTURA")
 @NamedQueries({
     @NamedQuery(name = "EstadisticaEstructura.findAll", query = "SELECT e FROM EstadisticaEstructura e")
-    , @NamedQuery(name = "EstadisticaEstructura.findById", query = "SELECT e FROM EstadisticaEstructura e WHERE e.id = :id")
+    , @NamedQuery(name = "EstadisticaEstructura.findByIdEstructuras", query = "SELECT e FROM EstadisticaEstructura e WHERE e.idEstructuras = :idEstructuras")
     , @NamedQuery(name = "EstadisticaEstructura.findByTipoOperacion", query = "SELECT e FROM EstadisticaEstructura e WHERE e.tipoOperacion = :tipoOperacion")
     , @NamedQuery(name = "EstadisticaEstructura.findByTipoEstructura", query = "SELECT e FROM EstadisticaEstructura e WHERE e.tipoEstructura = :tipoEstructura")
     , @NamedQuery(name = "EstadisticaEstructura.findByNumeroCanciones", query = "SELECT e FROM EstadisticaEstructura e WHERE e.numeroCanciones = :numeroCanciones")
@@ -37,7 +39,7 @@ public class EstadisticaEstructura implements Serializable {
     @Basic(optional = false)
     @GeneratedValue(generator = "ID_ESTRUCTURAS", strategy = GenerationType.AUTO)
     @Column(name = "ID_ESTRUCTURAS")
-    private BigDecimal id;
+    private BigDecimal idEstructuras;
     @Column(name = "TIPO_OPERACION")
     private String tipoOperacion;
     @Column(name = "TIPO_ESTRUCTURA")
@@ -50,31 +52,32 @@ public class EstadisticaEstructura implements Serializable {
     public EstadisticaEstructura() {
     }
 
-    public EstadisticaEstructura(BigDecimal id) {
-        this.id = id;
+    public EstadisticaEstructura(BigDecimal idEstructuras) {
+        this.idEstructuras = idEstructuras;
     }
 
-    public EstadisticaEstructura(String tipoDato, String tipoEstructura, BigInteger numeroCanciones, BigInteger tiempo) {
-        this.tipoOperacion = tipoDato;
+    public EstadisticaEstructura(String tipoOperacion, String tipoEstructura, BigInteger numeroCanciones, BigInteger tiempo) {
+        this.tipoOperacion = tipoOperacion;
         this.tipoEstructura = tipoEstructura;
         this.numeroCanciones = numeroCanciones;
         this.tiempo = tiempo;
     }
+    
 
-    public BigDecimal getId() {
-        return id;
+    public BigDecimal getIdEstructuras() {
+        return idEstructuras;
     }
 
-    public void setId(BigDecimal id) {
-        this.id = id;
+    public void setIdEstructuras(BigDecimal idEstructuras) {
+        this.idEstructuras = idEstructuras;
     }
 
-    public String getTipoDato() {
+    public String getTipoOperacion() {
         return tipoOperacion;
     }
 
-    public void setTipoDato(String tipoDato) {
-        this.tipoOperacion = tipoDato;
+    public void setTipoOperacion(String tipoOperacion) {
+        this.tipoOperacion = tipoOperacion;
     }
 
     public String getTipoEstructura() {
@@ -104,7 +107,7 @@ public class EstadisticaEstructura implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idEstructuras != null ? idEstructuras.hashCode() : 0);
         return hash;
     }
 
@@ -115,7 +118,7 @@ public class EstadisticaEstructura implements Serializable {
             return false;
         }
         EstadisticaEstructura other = (EstadisticaEstructura) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idEstructuras == null && other.idEstructuras != null) || (this.idEstructuras != null && !this.idEstructuras.equals(other.idEstructuras))) {
             return false;
         }
         return true;
@@ -123,7 +126,7 @@ public class EstadisticaEstructura implements Serializable {
 
     @Override
     public String toString() {
-        return "com.eam.analisis.modelo.EstadisticaEstructura[ id=" + id + " ]";
+        return "com.eam.analisis.modelo.EstadisticaEstructura[ idEstructuras=" + idEstructuras + " ]";
     }
     
 }
